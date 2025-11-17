@@ -5083,8 +5083,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   swimSpeed: 8
   turnSpeed: 10
-  dashSpeed: 40
-  dashDuration: 0.4
+  dashSpeed: 60
+  dashDuration: 0.3
   dashCooldown: 1
   dashParticles: {fileID: 7142098622723461528}
 --- !u!136 &1357447185350731975
