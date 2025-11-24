@@ -1,7 +1,12 @@
+using System;
 using UnityEngine;
 
 public class TurtleController : MonoBehaviour
 {
+    [Header("Breathing")]
+    [SerializeField] private float _maxBreathTime = 20f;
+    [SerializeField] private bool _disableBreathing;
+    
     [Header("Movement")]
     [SerializeField] private float swimSpeed = 5f;
     [SerializeField] private float turnSpeed = 10f;
@@ -24,8 +29,10 @@ public class TurtleController : MonoBehaviour
     private bool wasDashPressed;
     private float dashCooldownTimer;
 
+    private bool isDead;
     private bool isDashing;
     private float dashTimer;
+    private float breathTimer;
     private Vector3 dashDirection = Vector3.zero;
     private Quaternion dashRotation;
 
@@ -35,6 +42,7 @@ public class TurtleController : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
         dashParticles.Clear();
         dashParticles.Stop();
+        breathTimer = _maxBreathTime;
     }
 
     private void OnEnable() {
@@ -48,11 +56,15 @@ public class TurtleController : MonoBehaviour
     }
     
     private void Update() {
+        if (isDead) return;
+        
         HandleInput();
-        HandleDashTimers();
+        HandleTimers();
     }
     
     private void FixedUpdate() {
+        if (isDead) return;
+        
         HandleDash();
         HandleSwim();
         HandleRotation();
@@ -80,7 +92,18 @@ public class TurtleController : MonoBehaviour
         dashParticles.Play();
     }
 
-    private void HandleDashTimers() {
+    private void HandleTimers() {
+        
+        // Breathing timer
+        breathTimer -= Time.deltaTime;
+        if (breathTimer <= 0f && !_disableBreathing) {
+            isDead = true;
+            rb.linearVelocity = Vector3.zero;
+            dashParticles.Clear();
+            dashParticles.Stop();
+            return;
+        }
+        
         // Update dash timer
         if (isDashing) {
             dashTimer -= Time.deltaTime;
@@ -102,8 +125,7 @@ public class TurtleController : MonoBehaviour
     private void HandleSwim() {
         if (isDashing) return;
         
-        rb.linearVelocity = moveDir * swimSpeed;
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, 0f);
+        rb.linearVelocity = new Vector3(moveDir.x * swimSpeed, moveDir.y * swimSpeed, 0f);
     }
 
     private void HandleDash() {
@@ -139,6 +161,13 @@ public class TurtleController : MonoBehaviour
         Quaternion targetRot = Quaternion.Euler(0f, targetY, targetZ);
         rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * Time.fixedDeltaTime));
     }
-    
-    
+
+    private void OnTriggerEnter2D(Collider2D other) {
+        
+        // Handle air bubble collection
+        if (other.CompareTag("AirBubble")) {
+            breathTimer = _maxBreathTime;
+            Destroy(other.gameObject);
+        }
+    }
 }
