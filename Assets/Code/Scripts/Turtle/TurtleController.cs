@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 
 public class TurtleController : MonoBehaviour
@@ -10,6 +9,9 @@ public class TurtleController : MonoBehaviour
     [Header("Movement")]
     [SerializeField] private float swimSpeed = 5f;
     [SerializeField] private float turnSpeed = 10f;
+    [SerializeField] private float swimSpeedAcceleration = 10f;
+    [Range(0f, 1f)]
+    [SerializeField] private float surfaceDeflectAngle = 0.7f;
     
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 20f;
@@ -21,12 +23,11 @@ public class TurtleController : MonoBehaviour
     private PlayerControls controls;
     
     private Vector3 moveInput;
-    private Vector3 moveDir => new Vector3(moveInput.x, moveInput.y, 0f).normalized;
     private float lastHorizontalInput = 1f;
+    private Vector3 moveDir => new Vector3(moveInput.x, moveInput.y, 0f).normalized;
     private float targetY;
     private float targetZ;
     
-    private bool wasDashPressed;
     private float dashCooldownTimer;
 
     private bool isDead;
@@ -34,12 +35,13 @@ public class TurtleController : MonoBehaviour
     private float dashTimer;
     private float breathTimer;
     private Vector3 dashDirection = Vector3.zero;
-    private Quaternion dashRotation;
 
     
     private void Awake() {
         rb = GetComponent<Rigidbody>();
-        rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY;
+        
+        // Move on X and Y only. Rotation is done manually, so ensure no physics-based rotation occurs.
+        rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
         dashParticles.Clear();
         dashParticles.Stop();
         breathTimer = _maxBreathTime;
@@ -73,9 +75,11 @@ public class TurtleController : MonoBehaviour
     private void HandleInput() {
         moveInput = controls.Player.Move.ReadValue<Vector2>();
         
+        // Latest horizontal input. Only update when input is given.
         if (Mathf.Abs(moveInput.x) > 0.01f) {
             lastHorizontalInput = Mathf.Sign(moveInput.x);
         }
+        
         // Dash input
         if (!isDashing && dashCooldownTimer <= 0f && controls.Player.Dash.WasPressedThisDynamicUpdate()) {
             StartDash();
@@ -86,10 +90,19 @@ public class TurtleController : MonoBehaviour
         isDashing = true;
         dashTimer = dashDuration;
         dashDirection = moveDir.sqrMagnitude > 0.01f ? moveDir : (lastHorizontalInput > 0 ? Vector3.right : Vector3.left);
-        dashRotation = rb.rotation;
         dashParticles.Clear();
         dashParticles.Stop();
         dashParticles.Play();
+    }
+
+    private void CancelDash() {
+        if (!isDashing) return;
+        
+        isDashing = false;
+        dashCooldownTimer = dashCooldown;
+        dashParticles.Clear();
+        dashParticles.Stop();
+        rb.linearVelocity = Vector3.zero;
     }
 
     private void HandleTimers() {
@@ -108,7 +121,6 @@ public class TurtleController : MonoBehaviour
         if (isDashing) {
             dashTimer -= Time.deltaTime;
             if (dashTimer <= 0f) {
-                // End dash & start cooldown
                 isDashing = false;
                 dashCooldownTimer = dashCooldown;
                 dashParticles.Clear();
@@ -125,13 +137,12 @@ public class TurtleController : MonoBehaviour
     private void HandleSwim() {
         if (isDashing) return;
         
-        rb.linearVelocity = new Vector3(moveDir.x * swimSpeed, moveDir.y * swimSpeed, 0f);
+        rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, new Vector3(moveDir.x * swimSpeed, moveDir.y * swimSpeed, 0f), swimSpeedAcceleration * Time.fixedDeltaTime);
     }
 
     private void HandleDash() {
         if (!isDashing) return;
         
-        rb.MoveRotation(dashRotation);
         rb.linearVelocity = dashDirection.normalized * dashSpeed;
         rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, 0f);
     }
@@ -153,21 +164,52 @@ public class TurtleController : MonoBehaviour
     }
 
     private void HandleRotation() {
-        if (isDashing) return;
-        
         CalculateTargetYRotation();
-        CalculateTargetZRotation();
         
-        Quaternion targetRot = Quaternion.Euler(0f, targetY, targetZ);
-        rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * Time.fixedDeltaTime));
+        if (isDashing) {
+            // Only update Y-rotation while dashing (left/right facing)
+            var currentEuler = rb.rotation.eulerAngles;
+            var targetRot = Quaternion.Euler(0f, targetY, currentEuler.z);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * Time.fixedDeltaTime));
+        } else {
+            // Normal rotation, update both Y and Z axes
+            CalculateTargetZRotation();
+            var targetRot = Quaternion.Euler(0f, targetY, targetZ);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * Time.fixedDeltaTime));
+        }
     }
 
-    private void OnTriggerEnter2D(Collider2D other) {
+    private void OnCollisionEnter(Collision collision) {
+        if (!isDashing) return;
         
-        // Handle air bubble collection
-        if (other.CompareTag("AirBubble")) {
-            breathTimer = _maxBreathTime;
-            Destroy(other.gameObject);
+        
+        // TODO: Ensure this only runs on terrain. For now nothing else triggers this.
+        
+        // Get the average collision normal
+        var collisionNormal = Vector3.zero;
+        foreach (var contact in collision.contacts) {
+            collisionNormal += contact.normal;
         }
+        collisionNormal.Normalize();
+        
+        // Calculate the angle between dash direction and collision normal
+        var dotProduct = Vector3.Dot(dashDirection.normalized, -collisionNormal);
+        
+        // If dotProduct > 0.7 (~45 degrees) -> head-on collision, cancel the dash
+        // If dotProduct < 0.7, grazing it -> redirect velocity along the surface
+        if (dotProduct > surfaceDeflectAngle) {
+            CancelDash();
+        } 
+        else {
+            // Glancing collision - deflect the velocity along the surface
+            var deflectedVelocity = Vector3.ProjectOnPlane(rb.linearVelocity, collisionNormal);
+            rb.linearVelocity = deflectedVelocity;
+            
+            // Update dash direction to match the new deflected direction
+            if (deflectedVelocity.sqrMagnitude > 0.01f) {
+                dashDirection = deflectedVelocity.normalized;
+            }
+        }
+        
     }
 }
