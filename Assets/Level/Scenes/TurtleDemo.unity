@@ -940,9 +940,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6628082631053468912}
   serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
+  m_Mass: 5
+  m_Drag: 0.25
+  m_AngularDrag: 0.25
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -973,11 +973,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxBreathTime: 20
   _disableBreathing: 1
-  swimSpeed: 8
-  turnSpeed: 10
-  dashTurnSpeed: 15
-  swimSpeedAcceleration: 10
-  surfaceDeflectAngle: 0.7
+  swimSpeed: 25
+  swimForce: 20
+  turnSpeed: 5
+  dashTurnSpeed: 10
+  surfaceDeflectAngle: 1
   dashSpeed: 60
   dashDuration: 0.3
   dashCooldown: 0.5

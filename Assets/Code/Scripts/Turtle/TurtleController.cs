@@ -11,7 +11,6 @@ public class TurtleController : MonoBehaviour
     [SerializeField] private float swimForce = 50f;
     [SerializeField] private float turnSpeed = 10f;
     [SerializeField] private float dashTurnSpeed = 15f;
-    [SerializeField] private float drag = 5f;
     [Range(0f, 1f)]
     [SerializeField] private float surfaceDeflectAngle = 0.7f;
     
@@ -43,8 +42,6 @@ public class TurtleController : MonoBehaviour
         
         // Move on X and Y only. Rotation is done manually, so ensure no physics-based rotation occurs.
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
-        rb.linearDamping = drag;
-        
         dashParticles.Clear();
         dashParticles.Stop();
         breathTimer = _maxBreathTime;
