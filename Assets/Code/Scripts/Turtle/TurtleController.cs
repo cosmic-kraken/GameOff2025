@@ -8,8 +8,10 @@ public class TurtleController : MonoBehaviour
     
     [Header("Movement")]
     [SerializeField] private float swimSpeed = 5f;
+    [SerializeField] private float swimForce = 50f;
     [SerializeField] private float turnSpeed = 10f;
-    [SerializeField] private float swimSpeedAcceleration = 10f;
+    [SerializeField] private float dashTurnSpeed = 15f;
+    [SerializeField] private float drag = 5f;
     [Range(0f, 1f)]
     [SerializeField] private float surfaceDeflectAngle = 0.7f;
     
@@ -25,8 +27,6 @@ public class TurtleController : MonoBehaviour
     private Vector3 moveInput;
     private float lastHorizontalInput = 1f;
     private Vector3 moveDir => new Vector3(moveInput.x, moveInput.y, 0f).normalized;
-    private float targetY;
-    private float targetZ;
     
     private float dashCooldownTimer;
 
@@ -35,6 +35,7 @@ public class TurtleController : MonoBehaviour
     private float dashTimer;
     private float breathTimer;
     private Vector3 dashDirection = Vector3.zero;
+    private float dashFacingDirection;
 
     
     private void Awake() {
@@ -42,6 +43,8 @@ public class TurtleController : MonoBehaviour
         
         // Move on X and Y only. Rotation is done manually, so ensure no physics-based rotation occurs.
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
+        rb.linearDamping = drag;
+        
         dashParticles.Clear();
         dashParticles.Stop();
         breathTimer = _maxBreathTime;
@@ -67,7 +70,6 @@ public class TurtleController : MonoBehaviour
     private void FixedUpdate() {
         if (isDead) return;
         
-        HandleDash();
         HandleSwim();
         HandleRotation();
     }
@@ -90,6 +92,10 @@ public class TurtleController : MonoBehaviour
         isDashing = true;
         dashTimer = dashDuration;
         dashDirection = moveDir.sqrMagnitude > 0.01f ? moveDir : (lastHorizontalInput > 0 ? Vector3.right : Vector3.left);
+        dashFacingDirection = lastHorizontalInput; 
+                
+        rb.linearVelocity = dashDirection.normalized * dashSpeed;
+        
         dashParticles.Clear();
         dashParticles.Stop();
         dashParticles.Play();
@@ -137,43 +143,43 @@ public class TurtleController : MonoBehaviour
     private void HandleSwim() {
         if (isDashing) return;
         
-        rb.linearVelocity = Vector3.Lerp(rb.linearVelocity, new Vector3(moveDir.x * swimSpeed, moveDir.y * swimSpeed, 0f), swimSpeedAcceleration * Time.fixedDeltaTime);
+        var targetVelocity = new Vector3(moveDir.x * swimSpeed, moveDir.y * swimSpeed, 0f);
+        var velocityDiff = targetVelocity - rb.linearVelocity;
+        rb.AddForce(velocityDiff * swimForce, ForceMode.Force);
+    }
+    
+    private float CalculateTargetYRotation() {
+       return lastHorizontalInput < 0 ? -180f : 0f;
     }
 
-    private void HandleDash() {
-        if (!isDashing) return;
+    private float CalculateTargetZRotation() {
+        // No movement, go back to neutral
+        if (!(Mathf.Abs(moveInput.x) > 0.01f) && !(Mathf.Abs(moveInput.y) > 0.01f)) return 0f;
         
-        rb.linearVelocity = dashDirection.normalized * dashSpeed;
-        rb.linearVelocity = new Vector3(rb.linearVelocity.x, rb.linearVelocity.y, 0f);
+        // Calculate based on last horizontal input direction
+        return Mathf.Atan2(moveInput.y, lastHorizontalInput > 0 ? moveInput.x : -moveInput.x) * Mathf.Rad2Deg;
     }
 
-    private void CalculateTargetYRotation() {
-        targetY = (lastHorizontalInput < 0) ? -180f : 0f;
+    private float CalculateDashTargetZRotation() {
+        return Mathf.Atan2(dashDirection.y, dashFacingDirection > 0 ? dashDirection.x : -dashDirection.x) * Mathf.Rad2Deg;
     }
-
-    private void CalculateTargetZRotation() {
-        if (Mathf.Abs(moveInput.x) > 0.01f || Mathf.Abs(moveInput.y) > 0.01f) {
-            if (lastHorizontalInput > 0) {
-                targetZ = Mathf.Atan2(moveInput.y, moveInput.x) * Mathf.Rad2Deg;
-            } else {
-                targetZ = Mathf.Atan2(moveInput.y, -moveInput.x) * Mathf.Rad2Deg;
-            }
-        } else {
-            targetZ = 0f;
-        }
+    
+    private float CalculateDashTargetYRotation() {
+        return dashFacingDirection < 0 ? -180f : 0f;
     }
 
     private void HandleRotation() {
-        CalculateTargetYRotation();
-        
         if (isDashing) {
-            // Only update Y-rotation while dashing (left/right facing)
-            var currentEuler = rb.rotation.eulerAngles;
-            var targetRot = Quaternion.Euler(0f, targetY, currentEuler.z);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * Time.fixedDeltaTime));
-        } else {
-            // Normal rotation, update both Y and Z axes
-            CalculateTargetZRotation();
+            // Dashing rotation, use the captured facing direction from dash start
+            var dashTargetY = CalculateDashTargetYRotation();
+            var dashTargetZ = CalculateDashTargetZRotation();
+            var targetRot = Quaternion.Euler(0f, dashTargetY, dashTargetZ);
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, dashTurnSpeed * Time.fixedDeltaTime));
+        } 
+        else {
+            // Normal rotation, update both Y and Z axes based on current input
+            var targetY = CalculateTargetYRotation();
+            var targetZ = CalculateTargetZRotation();
             var targetRot = Quaternion.Euler(0f, targetY, targetZ);
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * Time.fixedDeltaTime));
         }
