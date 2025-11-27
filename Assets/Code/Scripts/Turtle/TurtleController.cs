@@ -243,6 +243,14 @@ public class TurtleController : MonoBehaviour
             OnTurtleCollectiblePickup?.Invoke(collectible);
             collectible.Collect(gameObject);
         }
+        
+        if (other.TryGetComponent<IAirBubble>(out var airBubble)) {
+            var airAmount = airBubble.GetAirAmount();
+            breathTimer += airAmount;
+            breathTimer = Mathf.Min(breathTimer, _maxBreathTime);
+            airBubble.PopBubble();
+            AudioManager.Instance.Play("Small_Bubbles");
+        }
     }
     
 }
