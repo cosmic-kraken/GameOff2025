@@ -5,6 +5,10 @@ using UnityEngine.Pool;
 
 public class AirBubbleSpawner : MonoBehaviour
 {
+    [Header("Performance Settings")]
+    [SerializeField] private bool onlySpawnWhenVisible = true;
+    
+    [Header("Spawn Settings")]
     [SerializeField] private List<GameObject> bubblePrefabs;
     [SerializeField] private float spawnInterval = 0.5f;
     [SerializeField] private int poolSize = 10;
@@ -25,20 +29,39 @@ public class AirBubbleSpawner : MonoBehaviour
             poolSize * 2
         );
     }
+
+    private void OnValidate() {
+        spawnWait = new WaitForSeconds(spawnInterval);
+    }
     
     private void OnEnable() {
         spawnWait = new WaitForSeconds(spawnInterval);
-        if (spawnCoroutine != null) {
-            StopCoroutine(spawnCoroutine);
+        if (!onlySpawnWhenVisible) {
+            if (spawnCoroutine != null) {
+                StopCoroutine(spawnCoroutine);
+            }
+            spawnCoroutine = StartCoroutine(SpawnBubbles());
         }
-        spawnCoroutine = StartCoroutine(SpawnBubbles());
+    }
+
+    private void OnBecameVisible() {
+        if (onlySpawnWhenVisible && spawnCoroutine == null) {
+            spawnWait = new WaitForSeconds(spawnInterval);
+            spawnCoroutine = StartCoroutine(SpawnBubbles());
+        }
+    }
+
+    private void OnBecameInvisible() {
+        if (onlySpawnWhenVisible && spawnCoroutine != null) {
+            StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
+        }
     }
     
     private IEnumerator SpawnBubbles() {
         while (true) {
             yield return spawnWait;
 
-            // Spawn bubbles at the spawner's position, with a slight random X offset
             var spawnPosition = transform.position;
             spawnPosition.x += Random.Range(-xSpawnRange, xSpawnRange);
             var bubble = bubblePool.Get();
@@ -50,6 +73,7 @@ public class AirBubbleSpawner : MonoBehaviour
     private void OnDisable() {
         if (spawnCoroutine != null) {
             StopCoroutine(spawnCoroutine);
+            spawnCoroutine = null;
         }
     }
 

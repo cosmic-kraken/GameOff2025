@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2010296820114826325}
   - component: {fileID: 1008953580837166624}
   m_Layer: 0
-  m_Name: AirBubble
+  m_Name: Bubble_Large
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126,7 +126,7 @@ MonoBehaviour:
   airAmount: 20
   minLifetime: 3
   maxLifeTime: 4
-  minSpeed: 1
+  minSpeed: 2
   maxSpeed: 3
-  xOscillationAmplitude: 0.2
-  xOscillationFrequency: 2
+  xOscillationAmplitude: 0.4
+  xOscillationFrequency: 3

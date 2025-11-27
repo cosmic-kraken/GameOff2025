@@ -5,7 +5,6 @@ using UnityEngine.Pool;
 public class AirBubble : MonoBehaviour, IAirBubble
 {
     [SerializeField] private ParticleSystem popEffect;
-    [SerializeField] private AudioSource popSound;
     [SerializeField] private float airAmount = 5f;
     [SerializeField] private float minLifetime = 1.5f;
     [SerializeField] private float maxLifeTime = 2.5f;
@@ -25,31 +24,48 @@ public class AirBubble : MonoBehaviour, IAirBubble
     private float floatSpeed;
     private float lifetime;
 
-    public void Init(IObjectPool<AirBubble> poolRef, Vector3 spawnPosition)
-    {
+    
+    public void Init(IObjectPool<AirBubble> poolRef, Vector3 spawnPosition) {
         pool = poolRef;
         startPos = spawnPosition;
         transform.position = startPos;
         transform.rotation = Quaternion.identity;
     }
+    
+    public float GetAirAmount() {
+        return airAmount;
+    }
 
-    private void OnEnable()
-    {
-        spawnTime = Time.time;
-        // Randomize speed and lifetime for this bubble
-        floatSpeed = Random.Range(minSpeed, maxSpeed);
-        lifetime = Random.Range(minLifetime, maxLifeTime);
-        active = true;
+    public void PopBubble() {
+        if (!active) return;
+        
+        active = false;
+        
         if (moveCoroutine != null)
         {
             StopCoroutine(moveCoroutine);
             moveCoroutine = null;
         }
+
+        StartCoroutine(ReturnToPoolAfterEffect());
+    }
+
+    private void OnEnable() {
+        spawnTime = Time.time;
+        floatSpeed = Random.Range(minSpeed, maxSpeed);
+        lifetime = Random.Range(minLifetime, maxLifeTime);
+        active = true;
+        
+        if (moveCoroutine != null)
+        {
+            StopCoroutine(moveCoroutine);
+            moveCoroutine = null;
+        }
+        
         moveCoroutine = StartCoroutine(MoveBubbleCoroutine());
     }
 
-    private IEnumerator MoveBubbleCoroutine()
-    {
+    private IEnumerator MoveBubbleCoroutine() {
         while (active)
         {
             var elapsed = Time.time - spawnTime;
@@ -64,33 +80,18 @@ public class AirBubble : MonoBehaviour, IAirBubble
             yield return null;
         }
     }
-
-    public float GetAirAmount()
-    {
-        return airAmount;
-    }
-
-    public void PopBubble()
-    {
-        if (!active) return;
-        active = false;
-        if (moveCoroutine != null)
-        {
-            StopCoroutine(moveCoroutine);
-            moveCoroutine = null;
+    
+    private IEnumerator ReturnToPoolAfterEffect() {
+        if (popEffect) {
+            popEffect.Play();
+            yield return new WaitForSeconds(popEffect.main.duration);
         }
-        if (popEffect) popEffect.Play();
-        if (popSound) popSound.Play();
 
-        StartCoroutine(ReturnToPoolAfterEffect());
-    }
-
-
-    private IEnumerator ReturnToPoolAfterEffect()
-    {
-        if (popEffect) yield return new WaitForSeconds(popEffect.main.duration);
-        else yield return null;
-        if (pool != null) pool.Release(this);
-        else Destroy(gameObject);
+        if (pool != null) {
+            pool.Release(this);
+        }
+        else {
+            Destroy(gameObject);
+        }
     }
 }
