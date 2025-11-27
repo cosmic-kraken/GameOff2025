@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class TurtleController : MonoBehaviour
 {
+    private readonly int SwimAnimHash = Animator.StringToHash("Swim");
+    private readonly int DashAnimHash = Animator.StringToHash("Dash");
+    
     [Header("Breathing")]
     [SerializeField] private float _maxBreathTime = 20f;
     [SerializeField] private bool _disableBreathing;
@@ -21,6 +24,7 @@ public class TurtleController : MonoBehaviour
     [SerializeField] private ParticleSystem dashParticles;
     
     private Rigidbody rb;
+    private Animator animator;
     private PlayerControls controls;
     
     private Vector3 moveInput;
@@ -31,6 +35,7 @@ public class TurtleController : MonoBehaviour
 
     private bool isDead;
     private bool isDashing;
+    private bool dashAnimationComplete; // Doesn't affect logic yet, but we can use it for logic like particles or sound timing later.
     private float dashTimer;
     private float breathTimer;
     private Vector3 dashDirection = Vector3.zero;
@@ -38,6 +43,7 @@ public class TurtleController : MonoBehaviour
 
     
     private void Awake() {
+        animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
         
         // Move on X and Y only. Rotation is done manually, so ensure no physics-based rotation occurs.
@@ -96,6 +102,9 @@ public class TurtleController : MonoBehaviour
         dashParticles.Clear();
         dashParticles.Stop();
         dashParticles.Play();
+        
+        dashAnimationComplete = false;
+        animator.Play(DashAnimHash);
     }
 
     private void CancelDash() {
@@ -214,5 +223,9 @@ public class TurtleController : MonoBehaviour
             }
         }
         
+    }
+
+    public void OnDashAnimationComplete() {
+        dashAnimationComplete = true;
     }
 }
