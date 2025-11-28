@@ -4,11 +4,21 @@ using UnityEngine;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager Instance;
-    public AudioSource sfxSource;
-    public float pitchMin = 0.9f;
-    public float pitchMax = 1.1f;
 
-    private Dictionary<string, AudioClip[]> sfxGroups = new Dictionary<string, AudioClip[]>();
+    [Header("Sources")]
+    public AudioSource sfxSource;
+    public AudioSource musicSource;
+
+    private Dictionary<string, AudioClip[]> sfxGroups = new();
+
+    // --- Music system ---
+    private List<AudioClip> musicPlaylist = new();
+    private int musicIndex = 0;
+    private float musicTimer = 0f;
+    private const float songInterval = 180f; // 3 minutes
+    private float startDelay = 30f; // 30 seconden stilte
+    private bool musicStarted = false;
+
 
     void Awake()
     {
@@ -16,38 +26,129 @@ public class AudioManager : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            LoadAllFolders();
+
+            LoadAllSFXFolders();
+            LoadMusicPlaylist();
         }
         else Destroy(gameObject);
     }
 
-    void LoadAllFolders()
+    void Update()
+{
+    if (!musicStarted)
     {
-        string[] folders = { "Damage_Hit", "Dash", "Eating", "Pickup", "Regular_Bubbles", "Small_Bubbles", "Swimming" };
+        musicTimer += Time.deltaTime;
+        if (musicTimer >= startDelay)
+        {
+            musicTimer = 0f;
+            StartMusicInternal();
+            musicStarted = true;
+        }
+        return;
+    }
+
+    musicTimer += Time.deltaTime;
+    if (musicTimer >= songInterval)
+    {
+        StartMusicInternal();
+        musicTimer = 0f;
+    }
+}
+
+
+    // -------------------------
+    //       LOAD SFX
+    // -------------------------
+    void LoadAllSFXFolders()
+    {
+        string[] folders =
+        {
+            "Big_Bubbles", "Damage_Hit","Dash","Eating","Pickup",
+            "Medium_Bubbles","Small_Bubbles","Swimming"
+        };
 
         foreach (var folder in folders)
         {
-            AudioClip[] clips = Resources.LoadAll<AudioClip>($"Audio/Sound/{folder}");
+            var clips = Resources.LoadAll<AudioClip>($"Audio/Sound/{folder}");
             if (clips.Length > 0)
                 sfxGroups[folder] = clips;
         }
     }
 
-    public void Play(string category)
+    // -------------------------
+    //       PLAY SFX
+    // -------------------------
+public void Play(string category)
+{
+    if (!sfxGroups.TryGetValue(category, out var clips) || clips.Length == 0)
+        return;
+
+    int idx = Random.Range(0, clips.Length);
+    float pitch = Random.Range(0.7f, 1.4f);
+
+    GameObject temp = new GameObject("TempSFX");
+    AudioSource tempSource = temp.AddComponent<AudioSource>();
+    tempSource.clip = clips[idx];
+    tempSource.pitch = pitch;
+    tempSource.Play();
+    Destroy(temp, clips[idx].length / pitch); // destroy after playing
+}
+
+
+    // -------------------------
+    //       MUSIC
+    // -------------------------
+    public void PlayMusic(AudioClip clip, bool loop = true)
     {
-        if (!sfxGroups.TryGetValue(category, out var clips) || clips.Length == 0)
+        if (clip == null) return;
+        musicSource.clip = clip;
+        musicSource.loop = loop;
+        musicSource.Play();
+    }
+
+    public void StopMusic() => musicSource.Stop();
+
+    // -------------------------
+    //   MUSIC PLAYLIST SYSTEM
+    // -------------------------
+    void LoadMusicPlaylist()
+    {
+        var clips = Resources.LoadAll<AudioClip>("Audio/Music");
+
+        musicPlaylist = new List<AudioClip>(clips);
+
+        if (musicPlaylist.Count == 0)
         {
-            Debug.LogWarning($"No clips for '{category}'");
+            Debug.LogWarning("No music in Resources/Audio/Music/");
             return;
         }
 
-        int idx = Random.Range(0, clips.Length);
+        Shuffle(musicPlaylist);
+    }
 
-        // Apply random pitch on the connected AudioSource
-        sfxSource.pitch = Random.Range(pitchMin, pitchMax);
-        sfxSource.PlayOneShot(clips[idx]);
+    // start de volgende track uit de playlist
+    void StartMusicInternal()
+    {
+        if (musicPlaylist.Count == 0) return;
 
-        // Reset pitch to default after playing
-        sfxSource.pitch = 1f;
+        var clip = musicPlaylist[musicIndex];
+        PlayMusic(clip, false);
+
+        musicIndex++;
+
+        if (musicIndex >= musicPlaylist.Count)
+        {
+            Shuffle(musicPlaylist);
+            musicIndex = 0;
+        }
+    }
+
+    void Shuffle(List<AudioClip> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            int rand = Random.Range(i, list.Count);
+            (list[i], list[rand]) = (list[rand], list[i]);
+        }
     }
 }
