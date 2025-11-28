@@ -46,6 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d1f5a4cd9ca84bc78ca2a629309e7e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spawnerVisualsPrefabs:
+  - {fileID: 8166396787668563772, guid: 02cccba5f7539b547990a8200ef7beaf, type: 3}
+  - {fileID: 5005398760121873245, guid: 7160048cb9ebf434db5faf355868b779, type: 3}
+  - {fileID: 2301313814371047667, guid: 8e27cca0fa069524faee00b245081975, type: 3}
   onlySpawnWhenVisible: 1
   bubblePrefabs:
   - {fileID: 4460030386418801398, guid: 0052376030a3d4c63b7afe20acabd965, type: 3}

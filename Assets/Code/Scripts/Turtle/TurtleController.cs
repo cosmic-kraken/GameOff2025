@@ -28,6 +28,9 @@ public class TurtleController : MonoBehaviour
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private ParticleSystem dashParticles;
 
+    [Header("Camera Effects")]
+    [SerializeField] private CameraEffectsController cameraEffects;
+    
     private Rigidbody rb;
     private Animator animator;
     private PlayerControls controls;
@@ -50,6 +53,7 @@ public class TurtleController : MonoBehaviour
     private void Awake() {
         animator = GetComponent<Animator>();
         rb = GetComponent<Rigidbody>();
+        cameraEffects ??= FindFirstObjectByType<CameraEffectsController>();
 
         // Move on X and Y only. Rotation is done manually, so ensure no physics-based rotation occurs.
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
@@ -112,6 +116,8 @@ public class TurtleController : MonoBehaviour
         dashAnimationComplete = false;
         animator.speed = 1f;
         animator.Play(DashAnimHash);
+        
+        cameraEffects?.TriggerDashEffect();
     }
 
     private void CancelDash() {
