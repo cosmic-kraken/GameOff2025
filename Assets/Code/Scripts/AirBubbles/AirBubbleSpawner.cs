@@ -5,6 +5,9 @@ using UnityEngine.Pool;
 
 public class AirBubbleSpawner : MonoBehaviour
 {
+    [Header("Visual Settings")]
+    [SerializeField] private List<GameObject> spawnerVisualsPrefabs;
+    
     [Header("Performance Settings")]
     [SerializeField] private bool onlySpawnWhenVisible = true;
     
@@ -28,6 +31,11 @@ public class AirBubbleSpawner : MonoBehaviour
             poolSize,
             poolSize * 2
         );
+        
+        if (spawnerVisualsPrefabs.Count > 0) {
+            var visualPrefab = spawnerVisualsPrefabs[Random.Range(0, spawnerVisualsPrefabs.Count)];
+            Instantiate(visualPrefab, transform);
+        }
     }
 
     private void OnValidate() {

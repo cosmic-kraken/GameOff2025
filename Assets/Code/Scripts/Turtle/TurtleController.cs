@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class TurtleController : MonoBehaviour
 {
     public static Action OnTurtleDeath = delegate { };
@@ -28,6 +29,9 @@ public class TurtleController : MonoBehaviour
     [SerializeField] private float dashCooldown = 1f;
     [SerializeField] private ParticleSystem dashParticles;
 
+    [Header("Camera Effects")]
+    [SerializeField] private CameraEffectsController cameraEffects;
+    
     private Rigidbody rb;
     private Animator animator;
     private PlayerControls controls;
@@ -48,8 +52,14 @@ public class TurtleController : MonoBehaviour
 
 
     private void Awake() {
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
+        
+        if (animator == null) {
+            Debug.LogError("TurtleController: No Animator found in children.");
+        }
+        
         rb = GetComponent<Rigidbody>();
+        cameraEffects ??= FindFirstObjectByType<CameraEffectsController>();
 
         // Move on X and Y only. Rotation is done manually, so ensure no physics-based rotation occurs.
         rb.constraints = RigidbodyConstraints.FreezePositionZ | RigidbodyConstraints.FreezeRotation;
@@ -105,12 +115,14 @@ public class TurtleController : MonoBehaviour
 
         rb.linearVelocity = dashDirection.normalized * dashSpeed;
 
-        dashParticles.Clear();
-        dashParticles.Stop();
+        dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         dashParticles.Play();
 
         dashAnimationComplete = false;
+        animator.speed = 1f;
         animator.Play(DashAnimHash);
+        
+        cameraEffects?.TriggerDashEffect();
     }
 
     private void CancelDash() {
@@ -118,8 +130,8 @@ public class TurtleController : MonoBehaviour
 
         isDashing = false;
         dashCooldownTimer = dashCooldown;
-        dashParticles.Clear();
-        dashParticles.Stop();
+        // Stop emission but let existing particles fade out naturally
+        dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         rb.linearVelocity = Vector3.zero;
     }
 
@@ -130,8 +142,7 @@ public class TurtleController : MonoBehaviour
         if (breathTimer <= 0f && !_disableBreathing) {
             isDead = true;
             rb.linearVelocity = Vector3.zero;
-            dashParticles.Clear();
-            dashParticles.Stop();
+            dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
             OnTurtleDeath?.Invoke();
             return;
         }
@@ -142,8 +153,7 @@ public class TurtleController : MonoBehaviour
             if (dashTimer <= 0f) {
                 isDashing = false;
                 dashCooldownTimer = dashCooldown;
-                dashParticles.Clear();
-                dashParticles.Stop();
+                dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
             }
         }
 
@@ -159,6 +169,7 @@ public class TurtleController : MonoBehaviour
         var targetVelocity = new Vector3(moveDir.x * swimSpeed, moveDir.y * swimSpeed, 0f);
         var velocityDiff = targetVelocity - rb.linearVelocity;
         rb.AddForce(velocityDiff * swimForce, ForceMode.Force);
+        animator.speed = targetVelocity.sqrMagnitude > 0.01f ? 2.5f : 1f;
     }
 
     private float CalculateTargetYRotation() {
@@ -249,7 +260,7 @@ public class TurtleController : MonoBehaviour
             breathTimer += airAmount;
             breathTimer = Mathf.Min(breathTimer, _maxBreathTime);
             airBubble.PopBubble();
-            AudioManager.Instance.Play("Small_Bubbles");
+            AudioManager.Instance?.Play("Small_Bubbles");
         }
     }
     
