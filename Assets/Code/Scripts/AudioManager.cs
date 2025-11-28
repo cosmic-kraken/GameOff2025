@@ -86,12 +86,8 @@ public void Play(string category)
     int idx = Random.Range(0, clips.Length);
     float pitch = Random.Range(0.7f, 1.4f);
 
-    GameObject temp = new GameObject("TempSFX");
-    AudioSource tempSource = temp.AddComponent<AudioSource>();
-    tempSource.clip = clips[idx];
-    tempSource.pitch = pitch;
-    tempSource.Play();
-    Destroy(temp, clips[idx].length / pitch); // destroy after playing
+    sfxSource.pitch = pitch;
+    sfxSource.PlayOneShot(clips[idx]);
 }
 
 
