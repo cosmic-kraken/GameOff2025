@@ -110,6 +110,7 @@ public class TurtleController : MonoBehaviour
         dashParticles.Play();
 
         dashAnimationComplete = false;
+        animator.speed = 1f;
         animator.Play(DashAnimHash);
     }
 
@@ -159,6 +160,7 @@ public class TurtleController : MonoBehaviour
         var targetVelocity = new Vector3(moveDir.x * swimSpeed, moveDir.y * swimSpeed, 0f);
         var velocityDiff = targetVelocity - rb.linearVelocity;
         rb.AddForce(velocityDiff * swimForce, ForceMode.Force);
+        animator.speed = targetVelocity.sqrMagnitude > 0.01f ? 2f : 1f;
     }
 
     private float CalculateTargetYRotation() {
@@ -249,7 +251,7 @@ public class TurtleController : MonoBehaviour
             breathTimer += airAmount;
             breathTimer = Mathf.Min(breathTimer, _maxBreathTime);
             airBubble.PopBubble();
-            AudioManager.Instance.Play("Small_Bubbles");
+            AudioManager.Instance?.Play("Small_Bubbles");
         }
     }
     
