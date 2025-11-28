@@ -123,6 +123,7 @@ public class TurtleController : MonoBehaviour
         animator.Play(DashAnimHash);
         
         cameraEffects?.TriggerDashEffect();
+        AudioManager.Instance?.Play("Dash");
     }
 
     private void CancelDash() {
