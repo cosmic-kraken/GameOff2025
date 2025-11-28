@@ -115,8 +115,7 @@ public class TurtleController : MonoBehaviour
 
         rb.linearVelocity = dashDirection.normalized * dashSpeed;
 
-        dashParticles.Clear();
-        dashParticles.Stop();
+        dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         dashParticles.Play();
 
         dashAnimationComplete = false;
@@ -131,8 +130,8 @@ public class TurtleController : MonoBehaviour
 
         isDashing = false;
         dashCooldownTimer = dashCooldown;
-        dashParticles.Clear();
-        dashParticles.Stop();
+        // Stop emission but let existing particles fade out naturally
+        dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         rb.linearVelocity = Vector3.zero;
     }
 
@@ -143,8 +142,7 @@ public class TurtleController : MonoBehaviour
         if (breathTimer <= 0f && !_disableBreathing) {
             isDead = true;
             rb.linearVelocity = Vector3.zero;
-            dashParticles.Clear();
-            dashParticles.Stop();
+            dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
             OnTurtleDeath?.Invoke();
             return;
         }
@@ -155,8 +153,7 @@ public class TurtleController : MonoBehaviour
             if (dashTimer <= 0f) {
                 isDashing = false;
                 dashCooldownTimer = dashCooldown;
-                dashParticles.Clear();
-                dashParticles.Stop();
+                dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
             }
         }
 
