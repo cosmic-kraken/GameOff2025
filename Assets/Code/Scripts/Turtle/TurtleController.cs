@@ -117,7 +117,7 @@ public class TurtleController : MonoBehaviour
 
         dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         dashParticles.Play();
-
+        
         dashAnimationComplete = false;
         animator.speed = 1f;
         animator.Play(DashAnimHash);
@@ -245,6 +245,7 @@ public class TurtleController : MonoBehaviour
     }
 
     public void OnDashAnimationComplete() {
+        // Todo: Trigger logic like sound or particles here
         dashAnimationComplete = true;
     }
 

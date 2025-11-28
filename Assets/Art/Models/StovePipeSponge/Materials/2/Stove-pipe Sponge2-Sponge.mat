@@ -126,10 +126,10 @@ Material:
     - _Color: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
     - _FakeSunDirection: {r: -2, g: 1, b: -1, a: 0}
-    - _LightColor: {r: 1, g: 0.49803925, b: 0.49803925, a: 1}
-    - _Mid1Color: {r: 1, g: 0.24313727, b: 0.24313727, a: 1}
-    - _Mid2Color: {r: 1, g: 0.37647063, b: 0.37647063, a: 1}
-    - _ShadowColor: {r: 1, g: 0.09411766, b: 0.09411766, a: 1}
+    - _LightColor: {r: 0.9528302, g: 0.6398299, b: 0.51686543, a: 1}
+    - _Mid1Color: {r: 1, g: 0.47549218, b: 0.2688679, a: 1}
+    - _Mid2Color: {r: 0.990566, g: 0.5519525, b: 0.378471, a: 1}
+    - _ShadowColor: {r: 1, g: 0.3542843, b: 0.09411764, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
