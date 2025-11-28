@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody))]
 public class TurtleController : MonoBehaviour
 {
     public static Action OnTurtleDeath = delegate { };
@@ -51,7 +52,12 @@ public class TurtleController : MonoBehaviour
 
 
     private void Awake() {
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
+        
+        if (animator == null) {
+            Debug.LogError("TurtleController: No Animator found in children.");
+        }
+        
         rb = GetComponent<Rigidbody>();
         cameraEffects ??= FindFirstObjectByType<CameraEffectsController>();
 
@@ -166,7 +172,7 @@ public class TurtleController : MonoBehaviour
         var targetVelocity = new Vector3(moveDir.x * swimSpeed, moveDir.y * swimSpeed, 0f);
         var velocityDiff = targetVelocity - rb.linearVelocity;
         rb.AddForce(velocityDiff * swimForce, ForceMode.Force);
-        animator.speed = targetVelocity.sqrMagnitude > 0.01f ? 2f : 1f;
+        animator.speed = targetVelocity.sqrMagnitude > 0.01f ? 2.5f : 1f;
     }
 
     private float CalculateTargetYRotation() {
