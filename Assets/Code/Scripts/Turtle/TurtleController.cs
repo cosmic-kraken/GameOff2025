@@ -22,6 +22,7 @@ public class TurtleController : MonoBehaviour
     [SerializeField] private float dashTurnSpeed = 15f;
     [Range(0f, 1f)]
     [SerializeField] private float surfaceDeflectAngle = 0.7f;
+    [SerializeField] private Transform seaLevelTransform;
 
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 20f;
@@ -90,6 +91,30 @@ public class TurtleController : MonoBehaviour
 
         HandleSwim();
         HandleRotation();
+        ClampToSeaLevel();
+    }
+    
+    private void ClampToSeaLevel() {
+        if (!seaLevelTransform) return;
+        
+        // If turtle is above sea level, clamp position and cancel upward velocity
+        if (rb.position.y > seaLevelTransform.position.y) {
+            var clampedPosition = rb.position;
+            clampedPosition.y = seaLevelTransform.position.y;
+            rb.position = clampedPosition;
+            
+            // Cancel any upward velocity
+            var velocity = rb.linearVelocity;
+            if (velocity.y > 0f) {
+                velocity.y = 0f;
+                rb.linearVelocity = velocity;
+            }
+        }
+    }
+    
+    private bool IsAtSeaLevel() {
+        if (!seaLevelTransform) return false;
+        return Mathf.Abs(rb.position.y - seaLevelTransform.position.y) < 0.1f;
     }
 
     private void HandleInput() {
@@ -131,7 +156,6 @@ public class TurtleController : MonoBehaviour
 
         isDashing = false;
         dashCooldownTimer = dashCooldown;
-        // Stop emission but let existing particles fade out naturally
         dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
         rb.linearVelocity = Vector3.zero;
     }
@@ -139,13 +163,19 @@ public class TurtleController : MonoBehaviour
     private void HandleTimers() {
 
         // Breathing timer
-        breathTimer -= Time.deltaTime;
-        if (breathTimer <= 0f && !_disableBreathing) {
-            isDead = true;
-            rb.linearVelocity = Vector3.zero;
-            dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
-            OnTurtleDeath?.Invoke();
-            return;
+        if (IsAtSeaLevel()) {
+            breathTimer += Time.deltaTime * 5f;
+            breathTimer = Mathf.Min(breathTimer, _maxBreathTime);
+        }
+        else {
+            breathTimer -= Time.deltaTime;
+            if (breathTimer <= 0f && !_disableBreathing) {
+                isDead = true;
+                rb.linearVelocity = Vector3.zero;
+                dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+                OnTurtleDeath?.Invoke();
+                return;
+            }
         }
 
         // Update dash timer
@@ -182,11 +212,25 @@ public class TurtleController : MonoBehaviour
         if (!(Mathf.Abs(moveInput.x) > 0.01f) && !(Mathf.Abs(moveInput.y) > 0.01f)) return 0f;
 
         // Calculate based on last horizontal input direction
-        return Mathf.Atan2(moveInput.y, lastHorizontalInput > 0 ? moveInput.x : -moveInput.x) * Mathf.Rad2Deg;
+        float targetZ = Mathf.Atan2(moveInput.y, lastHorizontalInput > 0 ? moveInput.x : -moveInput.x) * Mathf.Rad2Deg;
+        
+        // Clamp Z rotation at sea level to prevent upward tilt
+        if (IsAtSeaLevel() && targetZ > 0f) {
+            targetZ = 0f;
+        }
+        
+        return targetZ;
     }
 
     private float CalculateDashTargetZRotation() {
-        return Mathf.Atan2(dashDirection.y, dashFacingDirection > 0 ? dashDirection.x : -dashDirection.x) * Mathf.Rad2Deg;
+        float targetZ = Mathf.Atan2(dashDirection.y, dashFacingDirection > 0 ? dashDirection.x : -dashDirection.x) * Mathf.Rad2Deg;
+        
+        // Clamp Z rotation at sea level to prevent upward tilt
+        if (IsAtSeaLevel() && targetZ > 0f) {
+            targetZ = 0f;
+        }
+        
+        return targetZ;
     }
 
     private float CalculateDashTargetYRotation() {
