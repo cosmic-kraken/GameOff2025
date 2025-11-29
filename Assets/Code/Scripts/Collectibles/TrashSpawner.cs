@@ -1,8 +1,12 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class TrashSpawner : MonoBehaviour
 {
+    public static Action<int> OnTrashSpawned;
+    
     [Header("Spawn Settings")]
     [SerializeField] private List<GameObject> trashPrefabs;
     [SerializeField] private float easternXLimit = 20f;
@@ -56,6 +60,10 @@ public class TrashSpawner : MonoBehaviour
         }
         
         // Debug.Log($"TrashSpawner: Successfully spawned {successfulSpawns}/{numberOfTrashToSpawn} trash. Have fun cleaning it up.");
+    }
+
+    private void Start() {
+        OnTrashSpawned?.Invoke(spawnedTrash.Count);
     }
 
     private Vector3 GetRandomPosition() {
