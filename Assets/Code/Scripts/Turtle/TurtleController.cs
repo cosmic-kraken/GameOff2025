@@ -2,11 +2,15 @@ using System;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
-public class TurtleController : MonoBehaviour
+public class TurtleController : MonoBehaviour, IDamageable
 {
     public static Action OnTurtleDeath = delegate { };
     public static Action OnTurtleDash = delegate { };
     public static Action<ICollectible> OnTurtleCollectiblePickup = delegate { };
+    public static Action<float, float> OnTurtleHealthChanged = delegate { }; // Current health, max health
+    public static Action<float, float> OnTurtleBreathChanged = delegate { }; // Current breath, max breath
+    public static Action<int> OnTurtleDashChargesInitialized = delegate { }; // Max dash charges
+    public static Action<int> OnTurtleDashChargesChanged = delegate { }; // Current dash charges
 
     private readonly int SwimAnimHash = Animator.StringToHash("Swim");
     private readonly int DashAnimHash = Animator.StringToHash("Dash");
@@ -14,6 +18,12 @@ public class TurtleController : MonoBehaviour
     [Header("Breathing")]
     [SerializeField] private float _maxBreathTime = 20f;
     [SerializeField] private bool _disableBreathing;
+    
+    [Header("Health")]
+    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private float currentHealth = 100f;
+    [SerializeField] private bool invincible;
+    [SerializeField] private float regenPerSecond = 2f;
 
     [Header("Movement")]
     [SerializeField] private float swimSpeed = 5f;
@@ -26,8 +36,11 @@ public class TurtleController : MonoBehaviour
 
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 20f;
-    [SerializeField] private float dashDuration = 0.3f;
+    [Range(0f, 4f)]
+    [SerializeField] private int dashCharges = 3;
+    [SerializeField] private float dashDuration = 0.2f;
     [SerializeField] private float dashCooldown = 1f;
+    [SerializeField] private float dashChargeRegenTime = 5f;
     [SerializeField] private ParticleSystem dashParticles;
 
     [Header("Camera Effects")]
@@ -46,7 +59,9 @@ public class TurtleController : MonoBehaviour
     private bool isDead;
     private bool isDashing;
     private bool dashAnimationComplete; // Doesn't affect logic yet, but we can use it for logic like particles or sound timing later.
+    private int currentDashCharges;
     private float dashTimer;
+    private float dashChargeRegenTimer;
     private float breathTimer;
     private Vector3 dashDirection = Vector3.zero;
     private float dashFacingDirection;
@@ -67,6 +82,15 @@ public class TurtleController : MonoBehaviour
         dashParticles.Clear();
         dashParticles.Stop();
         breathTimer = _maxBreathTime;
+        currentHealth = maxHealth;
+        currentDashCharges = dashCharges;
+    }
+
+    private void Start() {
+        OnTurtleHealthChanged?.Invoke(currentHealth, maxHealth);
+        OnTurtleBreathChanged?.Invoke(breathTimer, _maxBreathTime);
+        OnTurtleDashChargesInitialized?.Invoke(currentDashCharges);
+        OnTurtleDashChargesChanged?.Invoke(currentDashCharges);
     }
 
     private void OnEnable() {
@@ -126,7 +150,7 @@ public class TurtleController : MonoBehaviour
         }
 
         // Dash input
-        if (!isDashing && dashCooldownTimer <= 0f && controls.Player.Dash.WasPressedThisDynamicUpdate()) {
+        if (!isDashing && currentDashCharges > 0 && dashCooldownTimer <= 0f && controls.Player.Dash.WasPressedThisDynamicUpdate()) {
             StartDash();
         }
     }
@@ -135,6 +159,8 @@ public class TurtleController : MonoBehaviour
         OnTurtleDash?.Invoke();
         isDashing = true;
         dashTimer = dashDuration;
+        currentDashCharges--;
+        OnTurtleDashChargesChanged?.Invoke(currentDashCharges);
         dashDirection = moveDir.sqrMagnitude > 0.01f ? moveDir : (lastHorizontalInput > 0 ? Vector3.right : Vector3.left);
         dashFacingDirection = lastHorizontalInput;
 
@@ -162,6 +188,12 @@ public class TurtleController : MonoBehaviour
 
     private void HandleTimers() {
 
+        // Health regeneration
+        if (currentHealth < maxHealth) {
+            currentHealth += regenPerSecond * Time.deltaTime;
+            currentHealth = Mathf.Min(currentHealth, maxHealth);
+        }
+
         // Breathing timer
         if (IsAtSeaLevel()) {
             breathTimer += Time.deltaTime * 5f;
@@ -177,6 +209,8 @@ public class TurtleController : MonoBehaviour
                 return;
             }
         }
+        OnTurtleBreathChanged?.Invoke(breathTimer, _maxBreathTime);
+
 
         // Update dash timer
         if (isDashing) {
@@ -191,6 +225,16 @@ public class TurtleController : MonoBehaviour
         // Update dash cooldown timer
         if (dashCooldownTimer > 0f) {
             dashCooldownTimer -= Time.deltaTime;
+        }
+
+        // Dash charge regeneration
+        if (currentDashCharges < dashCharges) {
+            dashChargeRegenTimer += Time.deltaTime;
+            if (dashChargeRegenTimer >= dashChargeRegenTime) {
+                currentDashCharges++;
+                dashChargeRegenTimer = 0f;
+                OnTurtleDashChargesChanged?.Invoke(currentDashCharges);
+            }
         }
     }
 
@@ -305,9 +349,32 @@ public class TurtleController : MonoBehaviour
             var airAmount = airBubble.GetAirAmount();
             breathTimer += airAmount;
             breathTimer = Mathf.Min(breathTimer, _maxBreathTime);
+            OnTurtleBreathChanged?.Invoke(breathTimer, _maxBreathTime);
             airBubble.PopBubble();
             AudioManager.Instance?.Play("Small_Bubbles");
         }
     }
+
+    public void InflictDamage(float damage) {
+        if (invincible || isDead) return;
+
+        currentHealth -= damage;
+        currentHealth = Mathf.Max(currentHealth, 0f);
+        OnTurtleHealthChanged?.Invoke(currentHealth, maxHealth);
+        
+        // TODO: Do damage feedback (particles, sound, camera shake, etc.)
+
+        if (currentHealth <= 0f) {
+            isDead = true;
+            rb.linearVelocity = Vector3.zero;
+            dashParticles.Stop(true, ParticleSystemStopBehavior.StopEmitting);
+            OnTurtleDeath?.Invoke();
+        }
+    }
     
+    public float GetCurrentHealth() => currentHealth;
+    
+    public bool IsAlive()  => !isDead;
+    
+    public bool IsDead() => isDead;
 }
