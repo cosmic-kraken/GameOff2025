@@ -5634,6 +5634,7 @@ GameObject:
   - component: {fileID: 7007786216531115194}
   - component: {fileID: 3205497542724432217}
   - component: {fileID: 6001405167032716172}
+  - component: {fileID: 5945148918609137998}
   m_Layer: 0
   m_Name: Turtle
   m_TagString: Untagged
@@ -5761,6 +5762,14 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!81 &5945148918609137998
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6072382280472039665}
+  m_Enabled: 1
 --- !u!1 &6466233670569642959
 GameObject:
   m_ObjectHideFlags: 0
