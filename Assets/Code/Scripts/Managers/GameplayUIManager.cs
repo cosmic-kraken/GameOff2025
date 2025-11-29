@@ -1,9 +1,8 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using HadiS.Systems;
+using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 public class GameplayUIManager : Singleton<GameplayUIManager>
@@ -21,6 +20,11 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
     [SerializeField] private float popDuration = 0.3f;
     [SerializeField] private AnimationCurve popCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
     
+    [Header("Trash UI Settings")]
+    [SerializeField] private TextMeshProUGUI _trashText;
+    
+    private int currentMaxTrash = 0;
+    private int collectedTrash = 0;
     private int[] previousCharges;
     private Dictionary<Transform, Vector3> originalScales = new();
 
@@ -30,6 +34,8 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
         TurtleController.OnTurtleBreathChanged += UpdateBreathUI;
         TurtleController.OnTurtleDashChargesInitialized += InitializeTurtleDashUI;
         TurtleController.OnTurtleDashChargesChanged += UpdateDashUI;
+        TrashSpawner.OnTrashSpawned += UpdateMaxTrash;
+        TurtleController.OnTurtleCollectiblePickup += UpdateTrashUI;
     }
 
     private void OnDisable() {
@@ -37,17 +43,19 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
         TurtleController.OnTurtleBreathChanged -= UpdateBreathUI;
         TurtleController.OnTurtleDashChargesInitialized -= InitializeTurtleDashUI;
         TurtleController.OnTurtleDashChargesChanged -= UpdateDashUI;
+        TrashSpawner.OnTrashSpawned -= UpdateMaxTrash;
+        TurtleController.OnTurtleCollectiblePickup -= UpdateTrashUI;
     }
     
     
     private void UpdateHealthUI(float currentHealth, float maxHealth) {
-        if (_healthBar != null) {
+        if (_healthBar) {
             _healthBar.fillAmount = Mathf.Clamp01(currentHealth / maxHealth);
         }
     }
     
     private void UpdateBreathUI(float currentBreath, float maxBreath) {
-        if (_breathBar != null) {
+        if (_breathBar) {
             _breathBar.fillAmount = Mathf.Clamp01(currentBreath / maxBreath);
         }
     }
@@ -134,5 +142,21 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
         
         // Reset icon scale after animation
         iconTransform.localScale = originalScale;
+    }
+    
+    private void UpdateMaxTrash(int maxTrash) {
+        currentMaxTrash = maxTrash;
+        collectedTrash = 0;
+        UpdateTrashUI();
+    }
+    
+    private void UpdateTrashUI(ICollectible trash = null) {
+        if (trash != null) {
+            collectedTrash ++;
+        }
+        
+        if (_trashText) {
+            _trashText.text = $"{collectedTrash} / {currentMaxTrash}";
+        }
     }
 }
