@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1247252072797823915}
   - component: {fileID: 7948163898211559505}
   - component: {fileID: 2402026401290284915}
+  - component: {fileID: 1678773169256564971}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -87,6 +88,48 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1678773169256564971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2604297274394794004}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b077c015c3094a6dac60aa29dd35ebeb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _onBecameVisible:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4478334242343405736}
+        m_TargetAssemblyTypeName: Trash, Assembly-CSharp
+        m_MethodName: StartRotating
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _onBecameInvisible:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4478334242343405736}
+        m_TargetAssemblyTypeName: Trash, Assembly-CSharp
+        m_MethodName: StopRotating
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4268177142820943076
 GameObject:
   m_ObjectHideFlags: 0
@@ -182,6 +225,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7366603736119285275}
+  - component: {fileID: 4478334242343405736}
+  - component: {fileID: 2404085686715126663}
   m_Layer: 0
   m_Name: Can1
   m_TagString: Untagged
@@ -199,10 +244,49 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6464385767479873016}
   - {fileID: 1247252072797823915}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4478334242343405736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5630404936420813679}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 301eb4cfd19f54607aa4ba8602b766e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  value: 10
+  rotationSpeed: {x: 10, y: 50, z: 10}
+  randomizeRotationSpeed: 1
+  randomSpeedVariation: 0.8
+--- !u!136 &2404085686715126663
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5630404936420813679}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Height: 2.4
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.7, z: 0}
