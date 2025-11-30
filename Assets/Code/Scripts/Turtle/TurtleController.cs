@@ -35,6 +35,7 @@ public class TurtleController : MonoBehaviour, IDamageable
     [Range(0f, 1f)]
     [SerializeField] private float surfaceDeflectAngle = 0.7f;
     [SerializeField] private Transform seaLevelTransform;
+    [SerializeField] private float outOfWaterEffectiveness = 0.50f;
 
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 20f;
@@ -79,6 +80,8 @@ public class TurtleController : MonoBehaviour, IDamageable
     
     private List<GameObject> trashInLevel = new();
     private Coroutine hintCoroutine;
+    
+    private bool isAboveWater = false;
 
 
     private void Awake() {
@@ -137,15 +140,27 @@ public class TurtleController : MonoBehaviour, IDamageable
     private void ClampToSeaLevel() {
         if (!seaLevelTransform) return;
         
-        // If turtle is above sea level, clamp position and cancel upward velocity
-        if (rb.position.y > seaLevelTransform.position.y) {
-            var clampedPosition = rb.position;
-            clampedPosition.y = seaLevelTransform.position.y;
-            rb.position = clampedPosition;
-            
-            // Cancel any upward velocity
-            var velocity = rb.linearVelocity;
-            if (velocity.y > 0f) {
+        var seaLevel = seaLevelTransform.position.y;
+        isAboveWater = rb.position.y > seaLevel;
+        
+        // If turtle is above water
+        if (isAboveWater) {
+            // Apply strong downward force to create realistic falling speed
+            rb.AddForce(Vector3.down * 80f, ForceMode.Acceleration);
+            return;
+        }
+        
+        // Turtle is in the water, prevent swimming above surface unless dashing
+        if (rb.position.y >= seaLevel - 0.5f) {
+            // Near or at the surface
+            if (rb.linearVelocity.y > 0f && !isDashing) {
+                // Has upward velocity but not dashing - clamp to surface
+                var clampedPosition = rb.position;
+                clampedPosition.y = Mathf.Min(clampedPosition.y, seaLevel);
+                rb.position = clampedPosition;
+                
+                // Cancel ALL upward velocity when not dashing near surface
+                var velocity = rb.linearVelocity;
                 velocity.y = 0f;
                 rb.linearVelocity = velocity;
             }
@@ -165,8 +180,8 @@ public class TurtleController : MonoBehaviour, IDamageable
             lastHorizontalInput = Mathf.Sign(moveInput.x);
         }
 
-        // Dash input
-        if (!isDashing && currentDashCharges > 0 && dashCooldownTimer <= 0f && controls.Player.Dash.WasPressedThisDynamicUpdate()) {
+        // Dash input - only allow dashing when in water
+        if (!isDashing && !isAboveWater && currentDashCharges > 0 && dashCooldownTimer <= 0f && controls.Player.Dash.WasPressedThisDynamicUpdate()) {
             StartDash();
         }
     }
@@ -211,7 +226,7 @@ public class TurtleController : MonoBehaviour, IDamageable
         }
 
         // Breathing timer
-        if (IsAtSeaLevel()) {
+        if (IsAtSeaLevel() || isAboveWater) {
             breathTimer += Time.deltaTime * 5f;
             breathTimer = Mathf.Min(breathTimer, _maxBreathTime);
         }
@@ -226,8 +241,7 @@ public class TurtleController : MonoBehaviour, IDamageable
             }
         }
         OnTurtleBreathChanged?.Invoke(breathTimer, _maxBreathTime);
-
-
+        
         // Update dash timer
         if (isDashing) {
             dashTimer -= Time.deltaTime;
@@ -320,9 +334,17 @@ public class TurtleController : MonoBehaviour, IDamageable
     private void HandleSwim() {
         if (isDashing) return;
 
-        var targetVelocity = new Vector3(moveDir.x * swimSpeed, moveDir.y * swimSpeed, 0f);
+        // Prevent swimming upward when near surface (only when in water)
+        var adjustedMoveDir = moveDir;
+        if (!isAboveWater && seaLevelTransform && rb.position.y >= seaLevelTransform.position.y - 0.5f) {
+            adjustedMoveDir.y = Mathf.Min(adjustedMoveDir.y, 0f);
+        }
+
+        // Reduced movement effectiveness
+        var effectivenessMultiplier = isAboveWater ? outOfWaterEffectiveness : 1f;
+        var targetVelocity = adjustedMoveDir * (swimSpeed * effectivenessMultiplier);
         var velocityDiff = targetVelocity - rb.linearVelocity;
-        rb.AddForce(velocityDiff * swimForce, ForceMode.Force);
+        rb.AddForce(velocityDiff * (swimForce * effectivenessMultiplier), ForceMode.Force);
         animator.speed = targetVelocity.sqrMagnitude > 0.01f ? 2.5f : 1f;
     }
 
@@ -361,19 +383,22 @@ public class TurtleController : MonoBehaviour, IDamageable
     }
 
     private void HandleRotation() {
+        // Reduced rotation effectiveness when above water
+        var rotationMultiplier = isAboveWater ? outOfWaterEffectiveness : 1f;
+        
         if (isDashing) {
             // Dashing rotation, use the captured facing direction from dash start
             var dashTargetY = CalculateDashTargetYRotation();
             var dashTargetZ = CalculateDashTargetZRotation();
             var targetRot = Quaternion.Euler(0f, dashTargetY, dashTargetZ);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, dashTurnSpeed * Time.fixedDeltaTime));
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, dashTurnSpeed * rotationMultiplier * Time.fixedDeltaTime));
         }
         else {
             // Normal rotation, update both Y and Z axes based on current input
             var targetY = CalculateTargetYRotation();
             var targetZ = CalculateTargetZRotation();
             var targetRot = Quaternion.Euler(0f, targetY, targetZ);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * Time.fixedDeltaTime));
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * rotationMultiplier * Time.fixedDeltaTime));
         }
     }
 
@@ -431,6 +456,8 @@ public class TurtleController : MonoBehaviour, IDamageable
                 hintCoroutine = null;
                 hintArrow.SetActive(false);
             }
+            
+            AudioManager.Instance?.Play("Pickup");
         }
         
         if (other.TryGetComponent<IAirBubble>(out var airBubble)) {
