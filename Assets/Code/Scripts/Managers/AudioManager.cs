@@ -64,7 +64,7 @@ public class AudioManager : MonoBehaviour
         string[] folders =
         {
             "Big_Bubbles", "Damage_Hit","Dash","Eating","Pickup",
-            "Medium_Bubbles","Small_Bubbles","Swimming"
+            "Medium_Bubbles","Small_Bubbles","Swimming","Splash"
         };
 
         foreach (var folder in folders)
