@@ -1403,7 +1403,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2695082955844895824, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: m_Name
-      value: f
+      value: Shark
       objectReference: {fileID: 0}
     - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: 'managedReferences[1015022544482993136]'
@@ -1497,29 +1497,8 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2695082955844895824, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 631226047}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
---- !u!1 &631226043 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2695082955844895824, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
-  m_PrefabInstance: {fileID: 631226042}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &631226047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 631226043}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 880cd6918432a554387efce500d6dade, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SharkEyePosition: {fileID: 1094273083}
 --- !u!1 &725581787
 GameObject:
   m_ObjectHideFlags: 0

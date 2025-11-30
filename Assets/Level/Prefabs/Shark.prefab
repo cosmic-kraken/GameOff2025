@@ -364,6 +364,7 @@ GameObject:
   - component: {fileID: 8900486281423592517}
   - component: {fileID: 437316648524252438}
   - component: {fileID: 7344141654944580912}
+  - component: {fileID: 662371355974522911}
   m_Layer: 0
   m_Name: Shark
   m_TagString: Untagged
@@ -501,6 +502,19 @@ MonoBehaviour:
           m_Value1: 14298062686808836452
         Name: ChaseSpeed
         m_Value: 8
+--- !u!114 &662371355974522911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2695082955844895824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 880cd6918432a554387efce500d6dade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SharkEyePosition: {fileID: 2470231092988776783}
 --- !u!1 &2864314190188717143
 GameObject:
   m_ObjectHideFlags: 0
