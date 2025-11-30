@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -33,6 +35,7 @@ public class TurtleController : MonoBehaviour, IDamageable
     [Range(0f, 1f)]
     [SerializeField] private float surfaceDeflectAngle = 0.7f;
     [SerializeField] private Transform seaLevelTransform;
+    [SerializeField] private float outOfWaterEffectiveness = 0.50f;
 
     [Header("Dash")]
     [SerializeField] private float dashSpeed = 20f;
@@ -45,6 +48,13 @@ public class TurtleController : MonoBehaviour, IDamageable
 
     [Header("Camera Effects")]
     [SerializeField] private CameraEffectsController cameraEffects;
+
+    [Header("Other Settings")]
+    [SerializeField] private float trashHintThreshold = 30f;
+    [SerializeField] private float trashHintCooldown = 10f;
+    [SerializeField] private float trashHintDuration = 10f;
+    [SerializeField] private float hintArrowOffset = 1.5f; 
+    [SerializeField] private GameObject hintArrow;
     
     private Rigidbody rb;
     private Animator animator;
@@ -65,6 +75,13 @@ public class TurtleController : MonoBehaviour, IDamageable
     private float breathTimer;
     private Vector3 dashDirection = Vector3.zero;
     private float dashFacingDirection;
+    private float timeSinceLastTrashPickup = 0f;
+    private float timeSinceLastHint = 0f;
+    
+    private List<GameObject> trashInLevel = new();
+    private Coroutine hintCoroutine;
+    
+    private bool isAboveWater = false;
 
 
     private void Awake() {
@@ -91,6 +108,8 @@ public class TurtleController : MonoBehaviour, IDamageable
         OnTurtleBreathChanged?.Invoke(breathTimer, _maxBreathTime);
         OnTurtleDashChargesInitialized?.Invoke(currentDashCharges);
         OnTurtleDashChargesChanged?.Invoke(currentDashCharges);
+        
+        trashInLevel = FindFirstObjectByType<TrashSpawner>()?.SpawnedTrash ?? new List<GameObject>();
     }
 
     private void OnEnable() {
@@ -121,15 +140,36 @@ public class TurtleController : MonoBehaviour, IDamageable
     private void ClampToSeaLevel() {
         if (!seaLevelTransform) return;
         
-        // If turtle is above sea level, clamp position and cancel upward velocity
-        if (rb.position.y > seaLevelTransform.position.y) {
-            var clampedPosition = rb.position;
-            clampedPosition.y = seaLevelTransform.position.y;
-            rb.position = clampedPosition;
-            
-            // Cancel any upward velocity
-            var velocity = rb.linearVelocity;
-            if (velocity.y > 0f) {
+        var seaLevel = seaLevelTransform.position.y;
+        bool wasAboveWater = isAboveWater;
+        isAboveWater = rb.position.y > seaLevel;
+        
+        // Detect state transitions and play sounds
+        if (isAboveWater && !wasAboveWater) {
+            AudioManager.Instance?.Play("Splash");
+        }
+        else if (!isAboveWater && wasAboveWater) {
+            AudioManager.Instance?.Play("Splash");
+        }
+        
+        // If turtle is above water
+        if (isAboveWater) {
+            // Apply strong downward force to create realistic falling speed
+            rb.AddForce(Vector3.down * 80f, ForceMode.Acceleration);
+            return;
+        }
+        
+        // Turtle is in the water, prevent swimming above surface unless dashing
+        if (rb.position.y >= seaLevel - 0.5f) {
+            // Near or at the surface
+            if (rb.linearVelocity.y > 0f && !isDashing) {
+                // Has upward velocity but not dashing - clamp to surface
+                var clampedPosition = rb.position;
+                clampedPosition.y = Mathf.Min(clampedPosition.y, seaLevel);
+                rb.position = clampedPosition;
+                
+                // Cancel ALL upward velocity when not dashing near surface
+                var velocity = rb.linearVelocity;
                 velocity.y = 0f;
                 rb.linearVelocity = velocity;
             }
@@ -138,7 +178,7 @@ public class TurtleController : MonoBehaviour, IDamageable
     
     private bool IsAtSeaLevel() {
         if (!seaLevelTransform) return false;
-        return Mathf.Abs(rb.position.y - seaLevelTransform.position.y) < 0.1f;
+        return Mathf.Abs(rb.position.y - seaLevelTransform.position.y) < 0.5f;
     }
 
     private void HandleInput() {
@@ -149,8 +189,8 @@ public class TurtleController : MonoBehaviour, IDamageable
             lastHorizontalInput = Mathf.Sign(moveInput.x);
         }
 
-        // Dash input
-        if (!isDashing && currentDashCharges > 0 && dashCooldownTimer <= 0f && controls.Player.Dash.WasPressedThisDynamicUpdate()) {
+        // Dash input - only allow dashing when in water
+        if (!isDashing && !isAboveWater && currentDashCharges > 0 && dashCooldownTimer <= 0f && controls.Player.Dash.WasPressedThisDynamicUpdate()) {
             StartDash();
         }
     }
@@ -195,7 +235,7 @@ public class TurtleController : MonoBehaviour, IDamageable
         }
 
         // Breathing timer
-        if (IsAtSeaLevel()) {
+        if (IsAtSeaLevel() || isAboveWater) {
             breathTimer += Time.deltaTime * 5f;
             breathTimer = Mathf.Min(breathTimer, _maxBreathTime);
         }
@@ -210,8 +250,7 @@ public class TurtleController : MonoBehaviour, IDamageable
             }
         }
         OnTurtleBreathChanged?.Invoke(breathTimer, _maxBreathTime);
-
-
+        
         // Update dash timer
         if (isDashing) {
             dashTimer -= Time.deltaTime;
@@ -236,14 +275,85 @@ public class TurtleController : MonoBehaviour, IDamageable
                 OnTurtleDashChargesChanged?.Invoke(currentDashCharges);
             }
         }
+        
+        // Trash hint timer
+        timeSinceLastTrashPickup += Time.deltaTime;
+        timeSinceLastHint += Time.deltaTime;
+        if (timeSinceLastTrashPickup >= trashHintThreshold && timeSinceLastHint >= trashHintCooldown && hintCoroutine == null) {
+            if (trashInLevel.Exists(t => t)) {
+                hintCoroutine = StartCoroutine(HintCoroutine());
+            }
+        }
+    }
+
+    private IEnumerator HintCoroutine() {
+        // Configuration missing
+        if (!hintArrow) {
+            Debug.LogWarning("TurtleController: No hint arrow child assigned!");
+            timeSinceLastHint = 0f;
+            yield break;
+        }
+        
+        // Enable the arrow child
+        hintArrow.SetActive(true);
+        
+        float elapsedTime = 0f;
+        while (elapsedTime < trashHintDuration) {
+            
+            // Find nearest trash
+            GameObject nearestTrash = null;
+            var nearestDistanceSqr = float.MaxValue;
+            foreach (var trash in trashInLevel) {
+                // Skip null or collected trash
+                if (!trash) continue;
+                var distSqr = (trash.transform.position - transform.position).sqrMagnitude;
+                if (!(distSqr < nearestDistanceSqr)) continue;
+                
+                nearestDistanceSqr = distSqr;
+                nearestTrash = trash;
+            }
+            
+            // If no trash found, exit hint early
+            if (!nearestTrash) {
+                break;
+            }
+            
+            // Calculate direction to trash
+            Vector3 directionToTrash = (nearestTrash.transform.position - transform.position).normalized;
+            
+            // Position arrow offset from turtle towards trash
+            Vector3 arrowPosition = transform.position + directionToTrash * hintArrowOffset;
+            hintArrow.transform.position = arrowPosition;
+            
+            // Calculate angle to rotate arrow. (Current arrow points right at 0 degrees on Z axis by default)
+            var angleToTrash = Mathf.Atan2(directionToTrash.y, directionToTrash.x) * Mathf.Rad2Deg;
+            
+            // Rotate the arrow on Z axis to point toward trash
+            hintArrow.transform.rotation = Quaternion.Euler(0f, 0f, angleToTrash);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        // Reset state
+        hintArrow.SetActive(false);
+        timeSinceLastHint = 0f;
+        hintCoroutine = null;
     }
 
     private void HandleSwim() {
         if (isDashing) return;
 
-        var targetVelocity = new Vector3(moveDir.x * swimSpeed, moveDir.y * swimSpeed, 0f);
+        // Prevent swimming upward when near surface (only when in water)
+        var adjustedMoveDir = moveDir;
+        if (!isAboveWater && seaLevelTransform && rb.position.y >= seaLevelTransform.position.y - 0.5f) {
+            adjustedMoveDir.y = Mathf.Min(adjustedMoveDir.y, 0f);
+        }
+
+        // Reduced movement effectiveness
+        var effectivenessMultiplier = isAboveWater ? outOfWaterEffectiveness : 1f;
+        var targetVelocity = adjustedMoveDir * (swimSpeed * effectivenessMultiplier);
         var velocityDiff = targetVelocity - rb.linearVelocity;
-        rb.AddForce(velocityDiff * swimForce, ForceMode.Force);
+        rb.AddForce(velocityDiff * (swimForce * effectivenessMultiplier), ForceMode.Force);
         animator.speed = targetVelocity.sqrMagnitude > 0.01f ? 2.5f : 1f;
     }
 
@@ -282,19 +392,22 @@ public class TurtleController : MonoBehaviour, IDamageable
     }
 
     private void HandleRotation() {
+        // Reduced rotation effectiveness when above water
+        var rotationMultiplier = isAboveWater ? outOfWaterEffectiveness : 1f;
+        
         if (isDashing) {
             // Dashing rotation, use the captured facing direction from dash start
             var dashTargetY = CalculateDashTargetYRotation();
             var dashTargetZ = CalculateDashTargetZRotation();
             var targetRot = Quaternion.Euler(0f, dashTargetY, dashTargetZ);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, dashTurnSpeed * Time.fixedDeltaTime));
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, dashTurnSpeed * rotationMultiplier * Time.fixedDeltaTime));
         }
         else {
             // Normal rotation, update both Y and Z axes based on current input
             var targetY = CalculateTargetYRotation();
             var targetZ = CalculateTargetZRotation();
             var targetRot = Quaternion.Euler(0f, targetY, targetZ);
-            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * Time.fixedDeltaTime));
+            rb.MoveRotation(Quaternion.Slerp(rb.rotation, targetRot, turnSpeed * rotationMultiplier * Time.fixedDeltaTime));
         }
     }
 
@@ -342,7 +455,18 @@ public class TurtleController : MonoBehaviour, IDamageable
         
         if (other.TryGetComponent<ICollectible>(out var collectible)) {
             OnTurtleCollectiblePickup?.Invoke(collectible);
+            timeSinceLastTrashPickup = 0f;
             collectible.Collect(gameObject);
+            
+            // Stop hint coroutine if trash was collected (arrow will be cleaned up by the coroutine)
+            if (hintCoroutine != null) {
+                StopCoroutine(hintCoroutine);
+                timeSinceLastHint = 0f;
+                hintCoroutine = null;
+                hintArrow.SetActive(false);
+            }
+            
+            AudioManager.Instance?.Play("Pickup");
         }
         
         if (other.TryGetComponent<IAirBubble>(out var airBubble)) {

@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3834071067020732687
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3844116697500249110}
+  - component: {fileID: 7662406628744203695}
+  m_Layer: 0
+  m_Name: TrashSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3844116697500249110
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3834071067020732687}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7662406628744203695
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3834071067020732687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f4cdeba4c1274dde8bac32f568398a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trashPrefabs:
+  - {fileID: 5630404936420813679, guid: 1096c39ade52cbb46a35434a350370dd, type: 3}
+  - {fileID: 1844839554994084177, guid: 6ff4fa22f9c1c684d92bb337d891bc3b, type: 3}
+  - {fileID: 3611812438776858446, guid: 4e1a33177cf0d454a8951a74f41ffc35, type: 3}
+  - {fileID: 7546041949038927378, guid: d7d026fed5cdf4e4499513f739d7372f, type: 3}
+  - {fileID: 1074171424809332833, guid: 176dd96751fd4554dbb1f7adb33beb73, type: 3}
+  - {fileID: 2836904149109803091, guid: e680d66ae76bc244ebffabdfabe7e04d, type: 3}
+  easternXLimit: 280
+  westernXLimit: -280
+  northernYLimit: 68
+  southernYLimit: -750
+  zSpawnPosition: 0
+  numberOfTrashToSpawn: 100
+  _checkBoxSize: {x: 20, y: 20, z: 40}
+  _limitSpawnAttempts: 0
+  _maxSpawnAttempts: 100
+  _obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 192
