@@ -18,6 +18,7 @@ public class TrashSpawner : MonoBehaviour
     
     [Header("Collision Check Settings")]
     [SerializeField] private float _checkRadius = 0.5f; 
+    [SerializeField] private bool _limitSpawnAttempts = false;
     [SerializeField] private int _maxSpawnAttempts = 30; 
     [SerializeField] private LayerMask _obstacleLayer = -1; 
     
@@ -35,31 +36,25 @@ public class TrashSpawner : MonoBehaviour
             return;
         }
 
-        int successfulSpawns = 0;
+        int totalAttempts = 0;
+        int maxTotalAttempts = _limitSpawnAttempts ? numberOfTrashToSpawn * _maxSpawnAttempts : int.MaxValue;
         
-        for (int i = 0; i < numberOfTrashToSpawn; i++)
+        while (spawnedTrash.Count < numberOfTrashToSpawn && totalAttempts < maxTotalAttempts)
         {
-            bool foundValidPosition = false;
-            
-            // Try to find a valid spawn position
-            for (int attempt = 0; attempt < _maxSpawnAttempts; attempt++) {
-                var spawnPosition = GetRandomPosition();
+            var spawnPosition = GetRandomPosition();
+            totalAttempts++;
 
-                if (IsPositionBlocked(spawnPosition)) continue;
-                
-                foundValidPosition = true;
-                SpawnTrashAt(spawnPosition);
-                successfulSpawns++;
-                break;
-            }
+            if (IsPositionBlocked(spawnPosition)) continue;
             
-            if (!foundValidPosition)
-            {
-                Debug.LogWarning($"TrashSpawner: Couldn't find good position for trash: {i + 1} after {_maxSpawnAttempts} attempts. (Giga unlucky?)");
-            }
+            SpawnTrashAt(spawnPosition);
         }
         
-        // Debug.Log($"TrashSpawner: Successfully spawned {successfulSpawns}/{numberOfTrashToSpawn} trash. Have fun cleaning it up.");
+        if (spawnedTrash.Count < numberOfTrashToSpawn)
+        {
+            Debug.LogWarning($"TrashSpawner: Only spawned {spawnedTrash.Count}/{numberOfTrashToSpawn} trash after {totalAttempts} attempts. Scene might be too crowded or spawn area too small.");
+        }
+        
+        // Debug.Log($"TrashSpawner: Successfully spawned {spawnedTrash.Count}/{numberOfTrashToSpawn} trash in {totalAttempts} attempts. Have fun cleaning it up.");
     }
 
     private void Start() {
