@@ -17,13 +17,14 @@ public partial class ChasePlayerAction : SharkAgentActionBase
 
     protected override Status OnStart()
     {
-        if (!TryInitializeAgent(ChaseSpeed?.Value))
+        if (!TryInitializeBase(ChaseSpeed?.Value))
             return Status.Failure;
 
         if (Player == null || Player.Value == null)
             return Status.Failure;
 
         Agent.SetDestination(Player.Value.transform.position);
+        PlayAnimationIfNotRunning("Chase", "StartChase");
         return Status.Running;
     }
 

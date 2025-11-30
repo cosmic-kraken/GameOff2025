@@ -362,10 +362,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8900486281423592517}
-  - component: {fileID: 437316648524252438}
   - component: {fileID: 7344141654944580912}
-  - component: {fileID: 662371355974522911}
   - component: {fileID: 2607750127981139796}
+  - component: {fileID: 437316648524252438}
+  - component: {fileID: 662371355974522911}
   m_Layer: 0
   m_Name: Shark
   m_TagString: Untagged
@@ -396,28 +396,6 @@ Transform:
   - {fileID: 6270960533185349243}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!195 &437316648524252438
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2695082955844895824}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 3.5
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0.2
-  m_AutoTraverseOffMeshLink: 0
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
 --- !u!114 &7344141654944580912
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -514,19 +492,6 @@ MonoBehaviour:
           m_Value1: 7462118488748343655
         Name: SharkEye
         m_Value: {fileID: 6270960533185349243}
---- !u!114 &662371355974522911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2695082955844895824}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 880cd6918432a554387efce500d6dade, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  SharkEyePosition: {fileID: 2470231092988776783}
 --- !u!95 &2607750127981139796
 Animator:
   serializedVersion: 7
@@ -549,6 +514,41 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!195 &437316648524252438
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2695082955844895824}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 200
+  m_StoppingDistance: 0.2
+  m_AutoTraverseOffMeshLink: 0
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &662371355974522911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2695082955844895824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 880cd6918432a554387efce500d6dade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SharkEyePosition: {fileID: 2470231092988776783}
 --- !u!1 &2864314190188717143
 GameObject:
   m_ObjectHideFlags: 0

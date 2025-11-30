@@ -351,6 +351,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 437316648524252438, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 2695082955844895824, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: m_Name
       value: Shark3
@@ -374,11 +378,11 @@ PrefabInstance:
       objectReference: {fileID: 1440458097}
     - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: managedReferences[1015022544482992552].m_Value
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: managedReferences[1015022544482993063].m_Value
-      value: 22
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: managedReferences[1015022549803466882].m_Value
@@ -493,6 +497,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 437316648524252438, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
+      propertyPath: m_AngularSpeed
+      value: 200
+      objectReference: {fileID: 0}
     - target: {fileID: 2695082955844895824, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: m_Name
       value: Shark2
@@ -516,11 +524,11 @@ PrefabInstance:
       objectReference: {fileID: 1440458097}
     - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: managedReferences[1015022544482992552].m_Value
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: managedReferences[1015022544482993063].m_Value
-      value: 22
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: managedReferences[1015022549803466881].m_Value
@@ -2101,6 +2109,14 @@ PrefabInstance:
       propertyPath: managedReferences[1015022544482992551].m_Value
       value: 
       objectReference: {fileID: 1440458097}
+    - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
+      propertyPath: managedReferences[1015022544482992552].m_Value
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
+      propertyPath: managedReferences[1015022544482993063].m_Value
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 8900486281423592517, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: m_LocalPosition.x
       value: -183

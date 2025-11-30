@@ -22,7 +22,7 @@ public partial class SharkMoveToPatrolPointAction : SharkAgentActionBase
 
     protected override Status OnStart()
     {
-        if (!TryInitializeAgent(SwimSpeed?.Value))
+        if (!TryInitializeBase(SwimSpeed?.Value))
             return Status.Failure;
 
         var points = PatrolPoints?.Value;
@@ -37,6 +37,7 @@ public partial class SharkMoveToPatrolPointAction : SharkAgentActionBase
         CurrentPatrolIndex.Value = index;
 
         Agent.SetDestination(_targetPosition);
+        PlayAnimationIfNotRunning("Swimming", "LostChase");
         return Status.Running;
     }
 
