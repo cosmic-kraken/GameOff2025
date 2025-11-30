@@ -85,9 +85,16 @@ public class GameSceneManager : Singleton<GameSceneManager>
         yield return new WaitForSeconds(_loadingScreenDelay);
         
         // Load new scene and turn off temporary camera
+        // TODO: Remove this ugly hack if we continue with this project. We want to fade loading screen out AFTER trash has spawned (heaviest start operation)
+        var trashSpawned = true;
+        if (newScene.ToLower().Contains("level")) {
+            trashSpawned = false;
+            TrashSpawner.OnTrashSpawned += _ =>  trashSpawned = true;
+        }
+        
         var loadOperation = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);
         loadOperation!.completed += _ => _temporaryCamera.SetActive(false);
-        while (!loadOperation.isDone) {
+        while (!loadOperation.isDone && !trashSpawned) {
             yield return null;
         }
         

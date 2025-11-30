@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 3840805825895328963}
   - component: {fileID: 8435276916087884565}
   - component: {fileID: 1922669934497603196}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: DashTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

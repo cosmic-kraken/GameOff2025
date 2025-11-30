@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody))]
 public class TurtleController : MonoBehaviour, IDamageable
@@ -115,11 +116,22 @@ public class TurtleController : MonoBehaviour, IDamageable
     private void OnEnable() {
         controls = new PlayerControls();
         controls.Player.Enable();
+        controls.Player.PauseUnpause.performed += OnPauseToggle;
     }
 
     private void OnDisable() {
         controls.Player.Disable();
+        controls.Player.PauseUnpause.performed -= OnPauseToggle;
         controls = null;
+    }
+    
+    private void OnPauseToggle(InputAction.CallbackContext context) {
+        if (GameStateManager.Instance.IsGamePaused) {
+            GameStateManager.Instance.ResumeGame();
+        }
+        else {
+            GameStateManager.Instance.PauseGame();
+        }
     }
 
     private void Update() {
