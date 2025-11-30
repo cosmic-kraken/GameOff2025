@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -17,15 +18,17 @@ public class TrashSpawner : MonoBehaviour
     [SerializeField] private int numberOfTrashToSpawn = 10;
     
     [Header("Collision Check Settings")]
-    [SerializeField] private Vector3 _checkBoxSize = new Vector3(0.5f, 0.5f, 0.5f);
+    [SerializeField] private Vector3 _checkBoxSize = new Vector3(20f, 20f, 100f);
     [SerializeField] private bool _limitSpawnAttempts = false;
     [SerializeField] private int _maxSpawnAttempts = 30; 
-    [SerializeField] private LayerMask _obstacleLayer = -1; 
+    [SerializeField] private bool _debugMode = false;
+    [SerializeField] private LayerMask _obstacleLayer = -1;
     
     private List<GameObject> spawnedTrash = new();
     public List<GameObject> SpawnedTrash => spawnedTrash;
     private Collider[] positionCheckResults = new Collider[10];
 
+    
     private void Awake() {
         SpawnTrash();
     }
@@ -113,14 +116,24 @@ public class TrashSpawner : MonoBehaviour
         Gizmos.DrawLine(bottomRight, bottomLeft);
         Gizmos.DrawLine(bottomLeft, topLeft);
         
-        // Draw check box visualization at center
-        Gizmos.color = Color.cyan;
-        Vector3 centerPosition = new Vector3(
-            (easternXLimit + westernXLimit) / 2f,
-            (northernYLimit + southernYLimit) / 2f,
-            zSpawnPosition
-        );
-        Gizmos.DrawWireCube(centerPosition, _checkBoxSize);
+        // Draw check box visualization at center (editor only)
+        if (!Application.isPlaying) {
+            Gizmos.color = Color.cyan;
+            Vector3 centerPosition = new Vector3(
+                (easternXLimit + westernXLimit) / 2f,
+                (northernYLimit + southernYLimit) / 2f,
+                zSpawnPosition
+            );
+            Gizmos.DrawWireCube(centerPosition, _checkBoxSize);
+        }
+        
+        // Draw detection boxes for each spawned trash (runtime)
+        if (Application.isPlaying && spawnedTrash != null && _debugMode) {
+            Gizmos.color = Color.green;
+            foreach (var trash in spawnedTrash.Where(trash => trash != null)) {
+                Gizmos.DrawWireCube(trash.transform.position, _checkBoxSize);
+            }
+        }
     }
 #endif
 }

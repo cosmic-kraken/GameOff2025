@@ -51,15 +51,21 @@ MonoBehaviour:
   - {fileID: 7546041949038927378, guid: d7d026fed5cdf4e4499513f739d7372f, type: 3}
   - {fileID: 1074171424809332833, guid: 176dd96751fd4554dbb1f7adb33beb73, type: 3}
   - {fileID: 2836904149109803091, guid: e680d66ae76bc244ebffabdfabe7e04d, type: 3}
+  - {fileID: 1712792467222721198, guid: 7dff21bdf7c97498d8e0db04e1b6a9a7, type: 3}
+  - {fileID: 537519917479173851, guid: 889648a8b5e4345aeb6f99db90e33754, type: 3}
+  - {fileID: 6395690568415908133, guid: ce788c72a5839416d95d44176445948f, type: 3}
+  - {fileID: 1712792467222721198, guid: 7dff21bdf7c97498d8e0db04e1b6a9a7, type: 3}
+  - {fileID: 537519917479173851, guid: 889648a8b5e4345aeb6f99db90e33754, type: 3}
+  - {fileID: 6395690568415908133, guid: ce788c72a5839416d95d44176445948f, type: 3}
   easternXLimit: 280
   westernXLimit: -280
   northernYLimit: 68
   southernYLimit: -750
   zSpawnPosition: 0
   numberOfTrashToSpawn: 100
-  _checkBoxSize: {x: 20, y: 20, z: 40}
+  _checkBoxSize: {x: 10, y: 10, z: 100}
   _limitSpawnAttempts: 0
   _maxSpawnAttempts: 100
   _obstacleLayer:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 448
