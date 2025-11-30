@@ -25,9 +25,12 @@ Material:
     serializedVersion: 3
     m_TexEnvs: []
     m_Ints: []
-    m_Floats: []
+    m_Floats:
+    - _ThresholdMid1ToMid2: 0.895
+    - _ThresholdMid2ToLight: 0.61
+    - _ThresholdShadowToMid1: 0.975
     m_Colors:
-    - _FakeSunDirection: {r: 0.02, g: -0.14, b: -0.5, a: 0}
+    - _FakeSunDirection: {r: 0.02, g: -0.08, b: -10, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6457494179939776469

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5224018733622183429}
   - component: {fileID: 7330327940559036120}
   - component: {fileID: 3126106245759826710}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -97,7 +97,7 @@ GameObject:
   - component: {fileID: 1543144341779033571}
   - component: {fileID: 2930432190978789905}
   - component: {fileID: 4440582372849945296}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Can2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -172,7 +172,7 @@ GameObject:
   - component: {fileID: 1568525157175945850}
   - component: {fileID: 3127812376685363546}
   - component: {fileID: 4156971460284640486}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -333,7 +333,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5801174099532399587}
   - component: {fileID: 8750631773658017305}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HintArrow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -378,7 +378,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
+  - {fileID: 2100000, guid: aa32d5f8c20b84cbeb89093c624cd5e2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -398,7 +398,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: a0caa65157f6d4fdf9c51fb5ba7f3bb0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -5722,7 +5722,7 @@ GameObject:
   - component: {fileID: 3205497542724432217}
   - component: {fileID: 6001405167032716172}
   - component: {fileID: 5945148918609137998}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Turtle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5786,7 +5786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769553da249694baf87fef692e6673f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxBreathTime: 20
+  _maxBreathTime: 40
   _disableBreathing: 1
   maxHealth: 100
   currentHealth: 100
@@ -5798,6 +5798,7 @@ MonoBehaviour:
   dashTurnSpeed: 10
   surfaceDeflectAngle: 1
   seaLevelTransform: {fileID: 0}
+  outOfWaterEffectiveness: 0.5
   dashSpeed: 80
   dashCharges: 3
   dashDuration: 0.4
@@ -5805,8 +5806,8 @@ MonoBehaviour:
   dashChargeRegenTime: 2
   dashParticles: {fileID: 8435276916087884565}
   cameraEffects: {fileID: 0}
-  trashHintThreshold: 20
-  trashHintCooldown: 15
+  trashHintThreshold: 10
+  trashHintCooldown: 5
   trashHintDuration: 20
   hintArrowOffset: 8
   hintArrow: {fileID: 3074603372328618258}
