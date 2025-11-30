@@ -141,7 +141,16 @@ public class TurtleController : MonoBehaviour, IDamageable
         if (!seaLevelTransform) return;
         
         var seaLevel = seaLevelTransform.position.y;
+        bool wasAboveWater = isAboveWater;
         isAboveWater = rb.position.y > seaLevel;
+        
+        // Detect state transitions and play sounds
+        if (isAboveWater && !wasAboveWater) {
+            AudioManager.Instance?.Play("Splash");
+        }
+        else if (!isAboveWater && wasAboveWater) {
+            AudioManager.Instance?.Play("Splash");
+        }
         
         // If turtle is above water
         if (isAboveWater) {
