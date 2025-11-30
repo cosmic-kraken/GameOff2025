@@ -1,3 +1,4 @@
+using Unity.Behavior;
 using UnityEngine;
 
 public class SharkDetectionVisual : MonoBehaviour
@@ -9,13 +10,24 @@ public class SharkDetectionVisual : MonoBehaviour
     private Color _detectionColor = Color.red;
     private Color _chaseDetectionColor = Color.green;
 
+    private BehaviorGraphAgent _behaviorGraphAgent;
+
 
     void Start()
     {
-        var behaviorGraphAgent = GetComponent<Unity.Behavior.BehaviorGraphAgent>();
-        if (behaviorGraphAgent != null)
+        _behaviorGraphAgent = GetComponent<Unity.Behavior.BehaviorGraphAgent>();
+    }
+
+    void Update()
+    {
+        runtimePullBehavior();
+    }
+
+    private void runtimePullBehavior()
+    {
+        if (_behaviorGraphAgent != null)
         {
-            var blackboard = behaviorGraphAgent.BlackboardReference.Blackboard;
+            var blackboard = _behaviorGraphAgent.BlackboardReference.Blackboard;
             foreach (var variable in blackboard.Variables)
             {
                 if (variable == null)
@@ -23,7 +35,7 @@ public class SharkDetectionVisual : MonoBehaviour
 
                 if (variable.Name == "DetectionRange")
                     _detectionRange = (float)variable.ObjectValue;
-                
+
                 if (variable.Name == "ChaseDetectionRange")
                     _chaseDetectionRange = (float)variable.ObjectValue;
             }

@@ -16,6 +16,7 @@ public partial class SharkMoveToPatrolPointAction : SharkAgentActionBase
     [SerializeReference] public BlackboardVariable<float> SwimSpeed;
     [SerializeReference] public BlackboardVariable<GameObject> Player;
     [SerializeReference] public BlackboardVariable<float> DetectionRange;
+    [SerializeReference] public BlackboardVariable<float> InitialDetectionRange;
 
     private Vector3 _targetPosition;
 
@@ -41,23 +42,6 @@ public partial class SharkMoveToPatrolPointAction : SharkAgentActionBase
 
     protected override Status OnUpdate()
     {
-        // // Player detection interrupt
-        // if (Player != null && Player.Value != null && DetectionRange != null)
-        // {
-        //     float distanceToPlayer = Vector3.Distance(
-        //         Agent.transform.position,
-        //         Player.Value.transform.position
-        //     );
-
-        //     // Debug.Log($"[Patrol] Distance to player: {distanceToPlayer}");
-
-        //     if (distanceToPlayer <= DetectionRange.Value)
-        //     {
-        //         Debug.Log("[Patrol] Player in range, breaking out of patrol");
-        //         return Status.Failure; // or Success depending on your graph
-        //     }
-        // }
-
         Status pathStatus = CheckAgentPathState();
         if (pathStatus == Status.Failure)
             return Status.Failure;
@@ -80,13 +64,9 @@ public partial class SharkMoveToPatrolPointAction : SharkAgentActionBase
         return Status.Success;
     }
 
-    // protected override void OnEnd()
-    // {
-    //     if (Agent != null && Agent.isActiveAndEnabled)
-    //     {
-    //         Agent.ResetPath();
-    //     }
-    // }
+    protected override void OnEnd()
+    {
+    }
 
     private void setNextPatrolPoint()
     {
@@ -97,5 +77,7 @@ public partial class SharkMoveToPatrolPointAction : SharkAgentActionBase
             index = (index + 1) % points.Count;
             CurrentPatrolIndex.Value = index;
         }
+        
+        DetectionRange.Value = InitialDetectionRange.Value;
     }
 }

@@ -24,6 +24,7 @@ public abstract class SharkAgentActionBase : Action
 
         if (speed.HasValue)
             Agent.speed = speed.Value;
+            Agent.acceleration = speed.Value * 2f;
 
         return true;
     }

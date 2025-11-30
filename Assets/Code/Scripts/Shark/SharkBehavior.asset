@@ -34,7 +34,7 @@ MonoBehaviour:
   - rid: 1015022544482992746
   - rid: 1015022544482992747
   - rid: 1015022544482992748
-  m_VersionTimestamp: 639001122212142261
+  m_VersionTimestamp: 639001171541606541
   m_SerializedVersion: 1
   m_DebugInfo: {fileID: -7938868686310638728}
   m_RuntimeGraph: {fileID: 6806285778324915333}
@@ -91,6 +91,11 @@ MonoBehaviour:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
       Tooltip: 
+    - Name: InitialDetectionRange
+      Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      Tooltip: 
     - Name: Self
       Type:
         m_SerializableType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
@@ -117,6 +122,16 @@ MonoBehaviour:
           PublicKeyToken=b77a5c561934e089
       Tooltip: 
     - Name: LostDetectionRange
+      Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      Tooltip: 
+    - Name: DetectionRange
+      Type:
+        m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+          PublicKeyToken=b77a5c561934e089
+      Tooltip: 
+    - Name: InitialDetectionRange
       Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
@@ -205,6 +220,7 @@ MonoBehaviour:
         - rid: 1015022544482992528
         - rid: 1015022544482992879
         - rid: 1015022544482992880
+        - rid: 1015022549803466816
         - rid: 1015022544482992526
     - rid: 1015022544482992524
       type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
@@ -343,6 +359,8 @@ MonoBehaviour:
         - rid: 1015022544482992684
         - rid: 1015022544482993030
         - rid: 1015022544482993031
+        - rid: 1015022549803466752
+        - rid: 1015022549803466817
         - rid: 1015022544482992683
     - rid: 1015022544482992681
       type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
@@ -723,7 +741,7 @@ MonoBehaviour:
         LocalValue:
           rid: 1015022544482993032
         LinkedVariable:
-          rid: 1015022544482993034
+          rid: 1015022549803466828
     - rid: 1015022544482993031
       type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
@@ -750,16 +768,6 @@ MonoBehaviour:
           m_Value0: 0
           m_Value1: 0
         Name: 
-        m_Value: 0
-    - rid: 1015022544482993034
-      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
-      data:
-        ID:
-          m_Value0: 11934507220126452480
-          m_Value1: 14298062686808836452
-        Name: ChaseSpeed
-        IsExposed: 1
-        m_IsShared: 0
         m_Value: 0
     - rid: 1015022544482993088
       type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
@@ -800,6 +808,93 @@ MonoBehaviour:
         IsExposed: 1
         m_IsShared: 0
         m_Value: 50
+    - rid: 1015022549803466752
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: DetectionRange
+        Type:
+          m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        LocalValue:
+          rid: 1015022549803466753
+        LinkedVariable:
+          rid: 1015022549803466754
+    - rid: 1015022549803466753
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 0
+    - rid: 1015022549803466754
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 6159483545540606575
+          m_Value1: 10676077670207812735
+        Name: DetectionRange
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 40
+    - rid: 1015022549803466816
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: InitialDetectionRange
+        Type:
+          m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        LocalValue:
+          rid: 1015022549803466818
+        LinkedVariable:
+          rid: 1015022549803466844
+    - rid: 1015022549803466817
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: InitialDetectionRange
+        Type:
+          m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
+            PublicKeyToken=b77a5c561934e089
+        LocalValue:
+          rid: 1015022549803466819
+        LinkedVariable:
+          rid: 1015022549803466844
+    - rid: 1015022549803466818
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 0
+    - rid: 1015022549803466819
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: 0
+    - rid: 1015022549803466828
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 11934507220126452480
+          m_Value1: 14298062686808836452
+        Name: ChaseSpeed
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 8
+    - rid: 1015022549803466844
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 7770106091587158681
+          m_Value1: 10645136284704875685
+        Name: InitialDetectionRange
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 40
 --- !u!114 &327915410314591644
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -812,7 +907,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: SharkBehavior Blackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 639001122210549257
+  VersionTimestamp: 639001171533720676
   AssetID:
     m_Value0: 11862559714917328147
     m_Value1: 13513080907307192872
@@ -827,6 +922,7 @@ MonoBehaviour:
     - rid: 1015022544482992481
     - rid: 1015022544482992899
     - rid: 1015022544482992976
+    - rid: 1015022549803466770
   m_SharedBlackboardVariableGuids: []
   references:
     version: 2
@@ -903,6 +999,14 @@ MonoBehaviour:
           m_Value1: 7462118488748343655
         Name: SharkEye
         m_Value: {fileID: 0}
+    - rid: 1015022549803466770
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 7770106091587158681
+          m_Value1: 10645136284704875685
+        Name: InitialDetectionRange
+        m_Value: 40
 --- !u!114 &6806285778324915333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -935,14 +1039,14 @@ MonoBehaviour:
           rid: 1015022544482992373
         BlackboardGroupReferences: []
         Root:
-          rid: 1015022544482993138
+          rid: 1015022549803466860
         m_ActiveNodes: []
         m_NodesToTick: []
         m_NodesToEnd:
           rid: 1015022544482992375
         m_EndedNodes:
           rid: 1015022544482992376
-        m_VersionTimestamp: 639001122212142261
+        m_VersionTimestamp: 639001171541606541
     - rid: 1015022544482992373
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -959,16 +1063,17 @@ MonoBehaviour:
       type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Variables:
-        - rid: 1015022544482993140
-        - rid: 1015022544482993141
-        - rid: 1015022544482993142
-        - rid: 1015022544482993143
-        - rid: 1015022544482993144
-        - rid: 1015022544482993145
-        - rid: 1015022544482993146
-        - rid: 1015022544482993147
-        - rid: 1015022544482993148
-    - rid: 1015022544482993138
+        - rid: 1015022549803466862
+        - rid: 1015022549803466863
+        - rid: 1015022549803466864
+        - rid: 1015022549803466865
+        - rid: 1015022549803466866
+        - rid: 1015022549803466867
+        - rid: 1015022549803466868
+        - rid: 1015022549803466869
+        - rid: 1015022549803466870
+        - rid: 1015022549803466871
+    - rid: 1015022549803466860
       type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -979,10 +1084,10 @@ MonoBehaviour:
         m_Parent:
           rid: -2
         m_Child:
-          rid: 1015022544482993139
+          rid: 1015022549803466861
         Repeat: 1
         AllowMultipleRepeatsPerTick: 0
-    - rid: 1015022544482993139
+    - rid: 1015022549803466861
       type: {class: BranchingConditionComposite, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -991,20 +1096,20 @@ MonoBehaviour:
         Graph:
           rid: 1015022544482992372
         m_Parent:
-          rid: 1015022544482993138
+          rid: 1015022549803466860
         m_Children:
-        - rid: 1015022544482993149
-        - rid: 1015022544482993150
+        - rid: 1015022549803466872
+        - rid: 1015022549803466873
         m_Conditions:
-        - rid: 1015022544482993151
+        - rid: 1015022549803466874
         m_RequiresAllConditions: 0
         True:
-          rid: 1015022544482993149
+          rid: 1015022549803466872
         False:
-          rid: 1015022544482993150
+          rid: 1015022549803466873
         m_CurrentChild:
           rid: -2
-    - rid: 1015022544482993140
+    - rid: 1015022549803466862
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1012,7 +1117,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 0}
-    - rid: 1015022544482993141
+    - rid: 1015022549803466863
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1020,7 +1125,7 @@ MonoBehaviour:
           m_Value1: 6889572540553602910
         Name: Player
         m_Value: {fileID: 0}
-    - rid: 1015022544482993142
+    - rid: 1015022549803466864
       type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1028,7 +1133,7 @@ MonoBehaviour:
           m_Value1: 7462118488748343655
         Name: SharkEye
         m_Value: {fileID: 0}
-    - rid: 1015022544482993143
+    - rid: 1015022549803466865
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1036,7 +1141,7 @@ MonoBehaviour:
           m_Value1: 15559487141899108343
         Name: SwimSpeed
         m_Value: 0
-    - rid: 1015022544482993144
+    - rid: 1015022549803466866
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1044,7 +1149,7 @@ MonoBehaviour:
           m_Value1: 14298062686808836452
         Name: ChaseSpeed
         m_Value: 8
-    - rid: 1015022544482993145
+    - rid: 1015022549803466867
       type: {class: 'BlackboardVariable`1[[System.Int32, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1052,7 +1157,7 @@ MonoBehaviour:
           m_Value1: 15345440203745553701
         Name: CurrentPatrolIndex
         m_Value: 0
-    - rid: 1015022544482993146
+    - rid: 1015022549803466868
       type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.Vector3, UnityEngine.CoreModule]], mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1060,7 +1165,7 @@ MonoBehaviour:
           m_Value1: 8094198043907379337
         Name: PatrolPoints
         m_Value: []
-    - rid: 1015022544482993147
+    - rid: 1015022549803466869
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1068,7 +1173,7 @@ MonoBehaviour:
           m_Value1: 10676077670207812735
         Name: DetectionRange
         m_Value: 40
-    - rid: 1015022544482993148
+    - rid: 1015022549803466870
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1076,7 +1181,15 @@ MonoBehaviour:
           m_Value1: 15356920099318384837
         Name: ChaseDetectionRange
         m_Value: 50
-    - rid: 1015022544482993149
+    - rid: 1015022549803466871
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 7770106091587158681
+          m_Value1: 10645136284704875685
+        Name: InitialDetectionRange
+        m_Value: 40
+    - rid: 1015022549803466872
       type: {class: ChasePlayerAction, ns: , asm: Assembly-CSharp}
       data:
         ID:
@@ -1085,16 +1198,20 @@ MonoBehaviour:
         Graph:
           rid: 1015022544482992372
         m_Parent:
-          rid: 1015022544482993139
+          rid: 1015022549803466861
         Self:
-          rid: 1015022544482993140
+          rid: 1015022549803466862
         Player:
-          rid: 1015022544482993141
+          rid: 1015022549803466863
         ChaseSpeed:
-          rid: 1015022544482993144
+          rid: 1015022549803466866
         LostDetectionRange:
-          rid: 1015022544482993148
-    - rid: 1015022544482993150
+          rid: 1015022549803466870
+        DetectionRange:
+          rid: 1015022549803466869
+        InitialDetectionRange:
+          rid: 1015022549803466871
+    - rid: 1015022549803466873
       type: {class: SharkMoveToPatrolPointAction, ns: , asm: Assembly-CSharp}
       data:
         ID:
@@ -1103,32 +1220,34 @@ MonoBehaviour:
         Graph:
           rid: 1015022544482992372
         m_Parent:
-          rid: 1015022544482993139
+          rid: 1015022549803466861
         Self:
-          rid: 1015022544482993140
+          rid: 1015022549803466862
         CurrentPatrolIndex:
-          rid: 1015022544482993145
+          rid: 1015022549803466867
         PatrolPoints:
-          rid: 1015022544482993146
+          rid: 1015022549803466868
         SwimSpeed:
-          rid: 1015022544482993143
+          rid: 1015022549803466865
         Player:
-          rid: 1015022544482993141
+          rid: 1015022549803466863
         DetectionRange:
-          rid: 1015022544482993147
-    - rid: 1015022544482993151
+          rid: 1015022549803466869
+        InitialDetectionRange:
+          rid: 1015022549803466871
+    - rid: 1015022549803466874
       type: {class: PlayerInRangeCondition, ns: , asm: Assembly-CSharp}
       data:
         Graph:
           rid: 1015022544482992372
         Self:
-          rid: 1015022544482993140
+          rid: 1015022549803466862
         Range:
-          rid: 1015022544482993147
+          rid: 1015022549803466869
         Player:
-          rid: 1015022544482993141
+          rid: 1015022549803466863
         SharkEyePosition:
-          rid: 1015022544482993142
+          rid: 1015022549803466864
 --- !u!114 &7743874847231248369
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1154,7 +1273,8 @@ MonoBehaviour:
   - rid: 1015022544482992452
   - rid: 1015022544482992898
   - rid: 1015022544482992975
-  m_VersionTimestamp: 639001122210549257
+  - rid: 1015022549803466769
+  m_VersionTimestamp: 639001171533720676
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: 327915410314591644}
@@ -1228,7 +1348,7 @@ MonoBehaviour:
           m_Value0: 6159483545540606575
           m_Value1: 10676077670207812735
         Name: DetectionRange
-        IsExposed: 1
+        IsExposed: 0
         m_IsShared: 0
         m_Value: 40
     - rid: 1015022544482992975
@@ -1251,3 +1371,13 @@ MonoBehaviour:
         IsExposed: 1
         m_IsShared: 0
         m_Value: {fileID: 0}
+    - rid: 1015022549803466769
+      type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 7770106091587158681
+          m_Value1: 10645136284704875685
+        Name: InitialDetectionRange
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: 40

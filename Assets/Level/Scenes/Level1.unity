@@ -1403,12 +1403,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2695082955844895824, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: m_Name
-      value: Shark
+      value: f
       objectReference: {fileID: 0}
     - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: 'managedReferences[1015022544482993136]'
       value: 'Unity.Behavior Unity.Behavior.BlackboardVariable`1[[UnityEngine.Transform,
         UnityEngine.CoreModule]]'
+      objectReference: {fileID: 0}
+    - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
+      propertyPath: managedReferences[1015022544482993029].Name
+      value: ChaseDetectionRange
       objectReference: {fileID: 0}
     - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: managedReferences[1015022544482993136].Name
@@ -1422,6 +1426,18 @@ PrefabInstance:
       propertyPath: managedReferences[1015022544482992551].m_Value
       value: 
       objectReference: {fileID: 1440458097}
+    - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
+      propertyPath: managedReferences[1015022544482992552].m_Value
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
+      propertyPath: managedReferences[1015022544482993029].m_Value
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
+      propertyPath: managedReferences[1015022544482993063].m_Value
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 7344141654944580912, guid: 5e08921861915b040a792d78b9f34d96, type: 3}
       propertyPath: managedReferences[1015022544482993136].m_Value
       value: 
@@ -6696,12 +6712,12 @@ MonoBehaviour:
   southernYLimit: -750
   zSpawnPosition: 0
   numberOfTrashToSpawn: 100
-  _checkRadius: 3
+  _checkRadius: 10
   _limitSpawnAttempts: 0
   _maxSpawnAttempts: 100
   _obstacleLayer:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 448
 --- !u!1 &1270589865
 GameObject:
   m_ObjectHideFlags: 0
