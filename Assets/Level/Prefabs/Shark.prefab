@@ -362,6 +362,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8900486281423592517}
+  - component: {fileID: 437316648524252438}
+  - component: {fileID: 7344141654944580912}
+  - component: {fileID: 662371355974522911}
+  - component: {fileID: 2607750127981139796}
   m_Layer: 0
   m_Name: Shark
   m_TagString: Untagged
@@ -391,6 +395,150 @@ Transform:
   - {fileID: 6420689830006127819}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!195 &437316648524252438
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2695082955844895824}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 0.5
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0.2
+  m_AutoTraverseOffMeshLink: 0
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 2
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
+--- !u!114 &7344141654944580912
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2695082955844895824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0038c16c34866b4f9e25c9c0dc0f7e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Graph: {fileID: 6806285778324915333, guid: 13a581ce3547a0a4289228657d1b88bb, type: 2}
+  m_BlackboardVariableOverridesList:
+  - rid: 1015022544482992550
+  - rid: 1015022544482992551
+  - rid: 1015022544482992552
+  - rid: 1015022544482992555
+  - rid: 1015022544482992974
+  - rid: 1015022544482993029
+  - rid: 1015022544482993063
+  m_OriginalGraph: {fileID: 6806285778324915333, guid: 13a581ce3547a0a4289228657d1b88bb, type: 2}
+  m_IsInitialised: 0
+  m_IsStarted: 0
+  references:
+    version: 2
+    RefIds:
+    - rid: 1015022544482992550
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1
+          m_Value1: 0
+        Name: Self
+        m_Value: {fileID: 2695082955844895824}
+    - rid: 1015022544482992551
+      type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 15370797938238285548
+          m_Value1: 6889572540553602910
+        Name: Player
+        m_Value: {fileID: 0}
+    - rid: 1015022544482992552
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11385771196199123201
+          m_Value1: 15559487141899108343
+        Name: SwimSpeed
+        m_Value: 12
+    - rid: 1015022544482992555
+      type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.Vector3, UnityEngine.CoreModule]], mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 321143615810645310
+          m_Value1: 8094198043907379337
+        Name: PatrolPoints
+        m_Value:
+        - {x: -120, y: -91, z: 0}
+        - {x: -241, y: -39, z: 0}
+        - {x: -254, y: -146, z: 0}
+        - {x: -148, y: -176.4, z: 0}
+    - rid: 1015022544482992974
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 6159483545540606575
+          m_Value1: 10676077670207812735
+        Name: DetectionRange
+        m_Value: 40
+    - rid: 1015022544482993029
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 13024893494602361396
+          m_Value1: 15356920099318384837
+        Name: ChaseDetectionRange
+        m_Value: 60
+    - rid: 1015022544482993063
+      type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 11934507220126452480
+          m_Value1: 14298062686808836452
+        Name: ChaseSpeed
+        m_Value: 18
+--- !u!114 &662371355974522911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2695082955844895824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 880cd6918432a554387efce500d6dade, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SharkEyePosition: {fileID: 2470231092988776783}
+--- !u!95 &2607750127981139796
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2695082955844895824}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 6896944408ee85943bc6822a81bb5424, type: 2}
+  m_Controller: {fileID: 9100000, guid: b478403386bbdbd4a840ac723cec85b0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2864314190188717143
 GameObject:
   m_ObjectHideFlags: 0
