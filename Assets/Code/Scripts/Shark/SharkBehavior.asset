@@ -34,7 +34,7 @@ MonoBehaviour:
   - rid: 1015022544482992746
   - rid: 1015022544482992747
   - rid: 1015022544482992748
-  m_VersionTimestamp: 639001071701165282
+  m_VersionTimestamp: 639001122212142261
   m_SerializedVersion: 1
   m_DebugInfo: {fileID: -7938868686310638728}
   m_RuntimeGraph: {fileID: 6806285778324915333}
@@ -65,11 +65,6 @@ MonoBehaviour:
       m_Value0: 3817512311972178401
       m_Value1: 14887768385938020969
     Variables:
-    - Name: Self
-      Type:
-        m_SerializableType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      Tooltip: 
     - Name: CurrentPatrolIndex
       Type:
         m_SerializableType: System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral,
@@ -96,6 +91,11 @@ MonoBehaviour:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
       Tooltip: 
+    - Name: Self
+      Type:
+        m_SerializableType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
+      Tooltip: 
     NamedChildren: []
     IsPlaceholder: 0
   - Name: ChasePlayerAction
@@ -106,11 +106,6 @@ MonoBehaviour:
       m_Value0: 1034802382724492682
       m_Value1: 5642760007940063745
     Variables:
-    - Name: Self
-      Type:
-        m_SerializableType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
-          Culture=neutral, PublicKeyToken=null
-      Tooltip: 
     - Name: Player
       Type:
         m_SerializableType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
@@ -125,6 +120,11 @@ MonoBehaviour:
       Type:
         m_SerializableType: System.Single, mscorlib, Version=4.0.0.0, Culture=neutral,
           PublicKeyToken=b77a5c561934e089
+      Tooltip: 
+    - Name: Self
+      Type:
+        m_SerializableType: UnityEngine.GameObject, UnityEngine.CoreModule, Version=0.0.0.0,
+          Culture=neutral, PublicKeyToken=null
       Tooltip: 
     NamedChildren: []
     IsPlaceholder: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
     - rid: 1015022544482992523
       type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
-        Position: {x: 254.00613, y: 599.11035}
+        Position: {x: 217, y: 299}
         ID:
           m_Value0: 6412561920220678960
           m_Value1: 2878702998955779851
@@ -200,12 +200,12 @@ MonoBehaviour:
           m_Value0: 3817512311972178401
           m_Value1: 14887768385938020969
         m_FieldValues:
-        - rid: 1015022544482992526
         - rid: 1015022544482992664
         - rid: 1015022544482992665
         - rid: 1015022544482992528
         - rid: 1015022544482992879
         - rid: 1015022544482992880
+        - rid: 1015022544482992526
     - rid: 1015022544482992524
       type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
@@ -325,7 +325,7 @@ MonoBehaviour:
     - rid: 1015022544482992680
       type: {class: ActionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
-        Position: {x: -242.5731, y: 600.2786}
+        Position: {x: -288, y: 299}
         ID:
           m_Value0: 8533621167787820915
           m_Value1: 5870882102392110606
@@ -340,10 +340,10 @@ MonoBehaviour:
           m_Value0: 1034802382724492682
           m_Value1: 5642760007940063745
         m_FieldValues:
-        - rid: 1015022544482992683
         - rid: 1015022544482992684
         - rid: 1015022544482993030
         - rid: 1015022544482993031
+        - rid: 1015022544482992683
     - rid: 1015022544482992681
       type: {class: PortModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
@@ -414,7 +414,7 @@ MonoBehaviour:
     - rid: 1015022544482992746
       type: {class: BranchingConditionNodeModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
       data:
-        Position: {x: -0.34808987, y: 261.7749}
+        Position: {x: 0, y: 103}
         ID:
           m_Value0: 11477074996161205584
           m_Value1: 5367090833421814640
@@ -443,6 +443,7 @@ MonoBehaviour:
           - rid: 1015022544482992785
           - rid: 1015022544482992786
           - rid: 1015022544482992787
+          - rid: 1015022544482993088
           OperatorFieldModel:
             rid: -2
         <RequiresAllConditionsTrue>k__BackingField: 0
@@ -450,7 +451,7 @@ MonoBehaviour:
     - rid: 1015022544482992747
       type: {class: FloatingPortNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
-        Position: {x: -180.34808, y: 500.97464}
+        Position: {x: -288, y: 211}
         ID:
           m_Value0: 841675546087034214
           m_Value1: 5428210552470586048
@@ -465,7 +466,7 @@ MonoBehaviour:
     - rid: 1015022544482992748
       type: {class: FloatingPortNodeModel, ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
-        Position: {x: 19.651917, y: 500.97464}
+        Position: {x: 217, y: 211}
         ID:
           m_Value0: 420959456360788860
           m_Value1: 3284740256603235973
@@ -733,7 +734,7 @@ MonoBehaviour:
         LocalValue:
           rid: 1015022544482993033
         LinkedVariable:
-          rid: 1015022544482993049
+          rid: 1015022544482993137
     - rid: 1015022544482993032
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -760,13 +761,42 @@ MonoBehaviour:
         IsExposed: 1
         m_IsShared: 0
         m_Value: 0
-    - rid: 1015022544482993049
+    - rid: 1015022544482993088
+      type: {class: BehaviorGraphNodeModel/FieldModel, ns: Unity.Behavior, asm: Unity.Behavior.Authoring}
+      data:
+        FieldName: SharkEyePosition
+        Type:
+          m_SerializableType: UnityEngine.Transform, UnityEngine.CoreModule, Version=0.0.0.0,
+            Culture=neutral, PublicKeyToken=null
+        LocalValue:
+          rid: 1015022544482993089
+        LinkedVariable:
+          rid: 1015022544482993121
+    - rid: 1015022544482993089
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 0
+          m_Value1: 0
+        Name: 
+        m_Value: {fileID: 0}
+    - rid: 1015022544482993121
+      type: {class: 'TypedVariableModel`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 1106803864789311869
+          m_Value1: 7462118488748343655
+        Name: SharkEye
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
+    - rid: 1015022544482993137
       type: {class: 'TypedVariableModel`1[[System.Single, mscorlib]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
       data:
         ID:
           m_Value0: 13024893494602361396
           m_Value1: 15356920099318384837
-        Name: LostDetectionRange
+        Name: ChaseDetectionRange
         IsExposed: 1
         m_IsShared: 0
         m_Value: 50
@@ -782,7 +812,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c02bb70996b49eba31d0c206e28da24, type: 3}
   m_Name: SharkBehavior Blackboard
   m_EditorClassIdentifier: 
-  VersionTimestamp: 639001071699999817
+  VersionTimestamp: 639001122210549257
   AssetID:
     m_Value0: 11862559714917328147
     m_Value1: 13513080907307192872
@@ -790,6 +820,7 @@ MonoBehaviour:
     m_Variables:
     - rid: 1015022544482992371
     - rid: 1015022544482992381
+    - rid: 1015022544482993091
     - rid: 1015022544482992395
     - rid: 1015022544482992405
     - rid: 1015022544482992431
@@ -862,8 +893,16 @@ MonoBehaviour:
         GUID:
           m_Value0: 13024893494602361396
           m_Value1: 15356920099318384837
-        Name: LostDetectionRange
+        Name: ChaseDetectionRange
         m_Value: 50
+    - rid: 1015022544482993091
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1106803864789311869
+          m_Value1: 7462118488748343655
+        Name: SharkEye
+        m_Value: {fileID: 0}
 --- !u!114 &6806285778324915333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -896,14 +935,14 @@ MonoBehaviour:
           rid: 1015022544482992373
         BlackboardGroupReferences: []
         Root:
-          rid: 1015022544482993064
+          rid: 1015022544482993138
         m_ActiveNodes: []
         m_NodesToTick: []
         m_NodesToEnd:
           rid: 1015022544482992375
         m_EndedNodes:
           rid: 1015022544482992376
-        m_VersionTimestamp: 639001071701165282
+        m_VersionTimestamp: 639001122212142261
     - rid: 1015022544482992373
       type: {class: BlackboardReference, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -920,15 +959,16 @@ MonoBehaviour:
       type: {class: Blackboard, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         m_Variables:
-        - rid: 1015022544482993066
-        - rid: 1015022544482993067
-        - rid: 1015022544482993068
-        - rid: 1015022544482993069
-        - rid: 1015022544482993070
-        - rid: 1015022544482993071
-        - rid: 1015022544482993072
-        - rid: 1015022544482993073
-    - rid: 1015022544482993064
+        - rid: 1015022544482993140
+        - rid: 1015022544482993141
+        - rid: 1015022544482993142
+        - rid: 1015022544482993143
+        - rid: 1015022544482993144
+        - rid: 1015022544482993145
+        - rid: 1015022544482993146
+        - rid: 1015022544482993147
+        - rid: 1015022544482993148
+    - rid: 1015022544482993138
       type: {class: Start, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -939,10 +979,10 @@ MonoBehaviour:
         m_Parent:
           rid: -2
         m_Child:
-          rid: 1015022544482993065
+          rid: 1015022544482993139
         Repeat: 1
         AllowMultipleRepeatsPerTick: 0
-    - rid: 1015022544482993065
+    - rid: 1015022544482993139
       type: {class: BranchingConditionComposite, ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         ID:
@@ -951,20 +991,20 @@ MonoBehaviour:
         Graph:
           rid: 1015022544482992372
         m_Parent:
-          rid: 1015022544482993064
+          rid: 1015022544482993138
         m_Children:
-        - rid: 1015022544482993074
-        - rid: 1015022544482993075
+        - rid: 1015022544482993149
+        - rid: 1015022544482993150
         m_Conditions:
-        - rid: 1015022544482993076
+        - rid: 1015022544482993151
         m_RequiresAllConditions: 0
         True:
-          rid: 1015022544482993074
+          rid: 1015022544482993149
         False:
-          rid: 1015022544482993075
+          rid: 1015022544482993150
         m_CurrentChild:
           rid: -2
-    - rid: 1015022544482993066
+    - rid: 1015022544482993140
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -972,7 +1012,7 @@ MonoBehaviour:
           m_Value1: 0
         Name: Self
         m_Value: {fileID: 0}
-    - rid: 1015022544482993067
+    - rid: 1015022544482993141
       type: {class: 'BlackboardVariable`1[[UnityEngine.GameObject, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -980,7 +1020,15 @@ MonoBehaviour:
           m_Value1: 6889572540553602910
         Name: Player
         m_Value: {fileID: 0}
-    - rid: 1015022544482993068
+    - rid: 1015022544482993142
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1106803864789311869
+          m_Value1: 7462118488748343655
+        Name: SharkEye
+        m_Value: {fileID: 0}
+    - rid: 1015022544482993143
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -988,7 +1036,7 @@ MonoBehaviour:
           m_Value1: 15559487141899108343
         Name: SwimSpeed
         m_Value: 0
-    - rid: 1015022544482993069
+    - rid: 1015022544482993144
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -996,7 +1044,7 @@ MonoBehaviour:
           m_Value1: 14298062686808836452
         Name: ChaseSpeed
         m_Value: 8
-    - rid: 1015022544482993070
+    - rid: 1015022544482993145
       type: {class: 'BlackboardVariable`1[[System.Int32, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1004,7 +1052,7 @@ MonoBehaviour:
           m_Value1: 15345440203745553701
         Name: CurrentPatrolIndex
         m_Value: 0
-    - rid: 1015022544482993071
+    - rid: 1015022544482993146
       type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.Vector3, UnityEngine.CoreModule]], mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1012,7 +1060,7 @@ MonoBehaviour:
           m_Value1: 8094198043907379337
         Name: PatrolPoints
         m_Value: []
-    - rid: 1015022544482993072
+    - rid: 1015022544482993147
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
@@ -1020,15 +1068,15 @@ MonoBehaviour:
           m_Value1: 10676077670207812735
         Name: DetectionRange
         m_Value: 40
-    - rid: 1015022544482993073
+    - rid: 1015022544482993148
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
         GUID:
           m_Value0: 13024893494602361396
           m_Value1: 15356920099318384837
-        Name: LostDetectionRange
+        Name: ChaseDetectionRange
         m_Value: 50
-    - rid: 1015022544482993074
+    - rid: 1015022544482993149
       type: {class: ChasePlayerAction, ns: , asm: Assembly-CSharp}
       data:
         ID:
@@ -1037,16 +1085,16 @@ MonoBehaviour:
         Graph:
           rid: 1015022544482992372
         m_Parent:
-          rid: 1015022544482993065
+          rid: 1015022544482993139
         Self:
-          rid: 1015022544482993066
+          rid: 1015022544482993140
         Player:
-          rid: 1015022544482993067
+          rid: 1015022544482993141
         ChaseSpeed:
-          rid: 1015022544482993069
+          rid: 1015022544482993144
         LostDetectionRange:
-          rid: 1015022544482993073
-    - rid: 1015022544482993075
+          rid: 1015022544482993148
+    - rid: 1015022544482993150
       type: {class: SharkMoveToPatrolPointAction, ns: , asm: Assembly-CSharp}
       data:
         ID:
@@ -1055,30 +1103,32 @@ MonoBehaviour:
         Graph:
           rid: 1015022544482992372
         m_Parent:
-          rid: 1015022544482993065
+          rid: 1015022544482993139
         Self:
-          rid: 1015022544482993066
+          rid: 1015022544482993140
         CurrentPatrolIndex:
-          rid: 1015022544482993070
+          rid: 1015022544482993145
         PatrolPoints:
-          rid: 1015022544482993071
+          rid: 1015022544482993146
         SwimSpeed:
-          rid: 1015022544482993068
+          rid: 1015022544482993143
         Player:
-          rid: 1015022544482993067
+          rid: 1015022544482993141
         DetectionRange:
-          rid: 1015022544482993072
-    - rid: 1015022544482993076
+          rid: 1015022544482993147
+    - rid: 1015022544482993151
       type: {class: PlayerInRangeCondition, ns: , asm: Assembly-CSharp}
       data:
         Graph:
           rid: 1015022544482992372
         Self:
-          rid: 1015022544482993066
+          rid: 1015022544482993140
         Range:
-          rid: 1015022544482993072
+          rid: 1015022544482993147
         Player:
-          rid: 1015022544482993067
+          rid: 1015022544482993141
+        SharkEyePosition:
+          rid: 1015022544482993142
 --- !u!114 &7743874847231248369
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1097,13 +1147,14 @@ MonoBehaviour:
   m_Variables:
   - rid: 1015022544482992379
   - rid: 1015022544482992380
+  - rid: 1015022544482993090
   - rid: 1015022544482992394
   - rid: 1015022544482992404
   - rid: 1015022544482992430
   - rid: 1015022544482992452
   - rid: 1015022544482992898
   - rid: 1015022544482992975
-  m_VersionTimestamp: 639001071699999817
+  m_VersionTimestamp: 639001122210549257
   m_CommandBuffer:
     m_Commands: []
   m_RuntimeBlackboardAsset: {fileID: 327915410314591644}
@@ -1186,7 +1237,17 @@ MonoBehaviour:
         ID:
           m_Value0: 13024893494602361396
           m_Value1: 15356920099318384837
-        Name: LostDetectionRange
+        Name: ChaseDetectionRange
         IsExposed: 1
         m_IsShared: 0
         m_Value: 50
+    - rid: 1015022544482993090
+      type: {class: 'TypedVariableModel`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior.GraphFramework, asm: Unity.Behavior.GraphFramework}
+      data:
+        ID:
+          m_Value0: 1106803864789311869
+          m_Value1: 7462118488748343655
+        Name: SharkEye
+        IsExposed: 1
+        m_IsShared: 0
+        m_Value: {fileID: 0}
