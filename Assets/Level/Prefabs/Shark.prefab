@@ -393,6 +393,7 @@ Transform:
   - {fileID: 5771392820976754153}
   - {fileID: 2686431639321709}
   - {fileID: 6420689830006127819}
+  - {fileID: 6270960533185349243}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!195 &437316648524252438
@@ -438,6 +439,7 @@ MonoBehaviour:
   - rid: 1015022544482992974
   - rid: 1015022544482993029
   - rid: 1015022544482993063
+  - rid: 1015022549803466880
   m_OriginalGraph: {fileID: 6806285778324915333, guid: 13a581ce3547a0a4289228657d1b88bb, type: 2}
   m_IsInitialised: 0
   m_IsStarted: 0
@@ -467,7 +469,7 @@ MonoBehaviour:
           m_Value0: 11385771196199123201
           m_Value1: 15559487141899108343
         Name: SwimSpeed
-        m_Value: 12
+        m_Value: 10
     - rid: 1015022544482992555
       type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.Vector3, UnityEngine.CoreModule]], mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -503,7 +505,15 @@ MonoBehaviour:
           m_Value0: 11934507220126452480
           m_Value1: 14298062686808836452
         Name: ChaseSpeed
-        m_Value: 18
+        m_Value: 22
+    - rid: 1015022549803466880
+      type: {class: 'BlackboardVariable`1[[UnityEngine.Transform, UnityEngine.CoreModule]]', ns: Unity.Behavior, asm: Unity.Behavior}
+      data:
+        GUID:
+          m_Value0: 1106803864789311869
+          m_Value1: 7462118488748343655
+        Name: SharkEye
+        m_Value: {fileID: 6270960533185349243}
 --- !u!114 &662371355974522911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,6 +646,37 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.048858847, y: -0.0077726776, z: 0.0009345645}
     m_Extent: {x: 0.009582888, y: 0.0076423977, z: 0.014408328}
   m_DirtyAABB: 0
+--- !u!1 &3079044715888453609
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6270960533185349243}
+  m_Layer: 0
+  m_Name: EyePos
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6270960533185349243
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3079044715888453609}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.43, y: 0.85, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8900486281423592517}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &3203556273410918927
 GameObject:
   m_ObjectHideFlags: 0

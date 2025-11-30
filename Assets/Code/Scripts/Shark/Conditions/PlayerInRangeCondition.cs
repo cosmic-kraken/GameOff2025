@@ -29,7 +29,7 @@ public partial class PlayerInRangeCondition : Condition
         {
             if (hit.collider.gameObject != Player.Value)
             {
-                Debug.Log("Player is not visible due to obstruction.");
+                // Debug.Log("Player is not visible due to obstruction.");
                 return false;
             }
         }
@@ -43,12 +43,12 @@ public partial class PlayerInRangeCondition : Condition
 
         if (Physics.Raycast(Player.Value.transform.position, towardsCamDir, out hitBehind, rayLength))
         {
-            Debug.Log("Player is behind an obstacle.");
+            // Debug.Log("Player is behind an obstacle.");
             return false;
         }
         else
         {
-            Debug.Log("Nothing behind player.");
+            // Debug.Log("Nothing behind player.");
         }
 
         return dist < Range.Value;
