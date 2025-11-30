@@ -1,4 +1,6 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -45,6 +47,13 @@ public class TurtleController : MonoBehaviour, IDamageable
 
     [Header("Camera Effects")]
     [SerializeField] private CameraEffectsController cameraEffects;
+
+    [Header("Other Settings")]
+    [SerializeField] private float trashHintThreshold = 30f;
+    [SerializeField] private float trashHintCooldown = 10f;
+    [SerializeField] private float trashHintDuration = 10f;
+    [SerializeField] private float hintArrowOffset = 1.5f; 
+    [SerializeField] private GameObject hintArrow;
     
     private Rigidbody rb;
     private Animator animator;
@@ -65,6 +74,11 @@ public class TurtleController : MonoBehaviour, IDamageable
     private float breathTimer;
     private Vector3 dashDirection = Vector3.zero;
     private float dashFacingDirection;
+    private float timeSinceLastTrashPickup = 0f;
+    private float timeSinceLastHint = 0f;
+    
+    private List<GameObject> trashInLevel = new();
+    private Coroutine hintCoroutine;
 
 
     private void Awake() {
@@ -91,6 +105,8 @@ public class TurtleController : MonoBehaviour, IDamageable
         OnTurtleBreathChanged?.Invoke(breathTimer, _maxBreathTime);
         OnTurtleDashChargesInitialized?.Invoke(currentDashCharges);
         OnTurtleDashChargesChanged?.Invoke(currentDashCharges);
+        
+        trashInLevel = FindFirstObjectByType<TrashSpawner>()?.SpawnedTrash ?? new List<GameObject>();
     }
 
     private void OnEnable() {
@@ -138,7 +154,7 @@ public class TurtleController : MonoBehaviour, IDamageable
     
     private bool IsAtSeaLevel() {
         if (!seaLevelTransform) return false;
-        return Mathf.Abs(rb.position.y - seaLevelTransform.position.y) < 0.1f;
+        return Mathf.Abs(rb.position.y - seaLevelTransform.position.y) < 0.5f;
     }
 
     private void HandleInput() {
@@ -236,6 +252,69 @@ public class TurtleController : MonoBehaviour, IDamageable
                 OnTurtleDashChargesChanged?.Invoke(currentDashCharges);
             }
         }
+        
+        // Trash hint timer
+        timeSinceLastTrashPickup += Time.deltaTime;
+        timeSinceLastHint += Time.deltaTime;
+        if (timeSinceLastTrashPickup >= trashHintThreshold && timeSinceLastHint >= trashHintCooldown && hintCoroutine == null) {
+            if (trashInLevel.Exists(t => t)) {
+                hintCoroutine = StartCoroutine(HintCoroutine());
+            }
+        }
+    }
+
+    private IEnumerator HintCoroutine() {
+        // Configuration missing
+        if (!hintArrow) {
+            Debug.LogWarning("TurtleController: No hint arrow child assigned!");
+            timeSinceLastHint = 0f;
+            yield break;
+        }
+        
+        // Enable the arrow child
+        hintArrow.SetActive(true);
+        
+        float elapsedTime = 0f;
+        while (elapsedTime < trashHintDuration) {
+            
+            // Find nearest trash
+            GameObject nearestTrash = null;
+            var nearestDistanceSqr = float.MaxValue;
+            foreach (var trash in trashInLevel) {
+                // Skip null or collected trash
+                if (!trash) continue;
+                var distSqr = (trash.transform.position - transform.position).sqrMagnitude;
+                if (!(distSqr < nearestDistanceSqr)) continue;
+                
+                nearestDistanceSqr = distSqr;
+                nearestTrash = trash;
+            }
+            
+            // If no trash found, exit hint early
+            if (!nearestTrash) {
+                break;
+            }
+            
+            // Calculate direction to trash
+            Vector3 directionToTrash = (nearestTrash.transform.position - transform.position).normalized;
+            
+            // Position arrow offset from turtle towards trash
+            Vector3 arrowPosition = transform.position + directionToTrash * hintArrowOffset;
+            hintArrow.transform.position = arrowPosition;
+            
+            // Calculate angle to rotate arrow. (Current arrow points right at 0 degrees on Z axis by default)
+            var angleToTrash = Mathf.Atan2(directionToTrash.y, directionToTrash.x) * Mathf.Rad2Deg;
+            
+            // Rotate the arrow on Z axis to point toward trash
+            hintArrow.transform.rotation = Quaternion.Euler(0f, 0f, angleToTrash);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+        
+        // Reset state
+        hintArrow.SetActive(false);
+        timeSinceLastHint = 0f;
+        hintCoroutine = null;
     }
 
     private void HandleSwim() {
@@ -342,7 +421,16 @@ public class TurtleController : MonoBehaviour, IDamageable
         
         if (other.TryGetComponent<ICollectible>(out var collectible)) {
             OnTurtleCollectiblePickup?.Invoke(collectible);
+            timeSinceLastTrashPickup = 0f;
             collectible.Collect(gameObject);
+            
+            // Stop hint coroutine if trash was collected (arrow will be cleaned up by the coroutine)
+            if (hintCoroutine != null) {
+                StopCoroutine(hintCoroutine);
+                timeSinceLastHint = 0f;
+                hintCoroutine = null;
+                hintArrow.SetActive(false);
+            }
         }
         
         if (other.TryGetComponent<IAirBubble>(out var airBubble)) {

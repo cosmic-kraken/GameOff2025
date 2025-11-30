@@ -17,12 +17,13 @@ public class TrashSpawner : MonoBehaviour
     [SerializeField] private int numberOfTrashToSpawn = 10;
     
     [Header("Collision Check Settings")]
-    [SerializeField] private float _checkRadius = 0.5f; 
+    [SerializeField] private Vector3 _checkBoxSize = new Vector3(0.5f, 0.5f, 0.5f);
     [SerializeField] private bool _limitSpawnAttempts = false;
     [SerializeField] private int _maxSpawnAttempts = 30; 
     [SerializeField] private LayerMask _obstacleLayer = -1; 
     
     private List<GameObject> spawnedTrash = new();
+    public List<GameObject> SpawnedTrash => spawnedTrash;
     private Collider[] positionCheckResults = new Collider[10];
 
     private void Awake() {
@@ -68,7 +69,9 @@ public class TrashSpawner : MonoBehaviour
     }
 
     private bool IsPositionBlocked(Vector3 position) {
-        return Physics.OverlapSphereNonAlloc(position, _checkRadius, positionCheckResults, _obstacleLayer) > 0;
+        // Use OverlapBox to check for collisions in all 3 axes (including Z)
+        // Replaces old OverlapSphere method. Praying it works as intended.
+        return Physics.OverlapBoxNonAlloc(position, _checkBoxSize * 0.5f, positionCheckResults, Quaternion.identity, _obstacleLayer) > 0;
     }
 
     private void SpawnTrashAt(Vector3 position) {
@@ -110,14 +113,14 @@ public class TrashSpawner : MonoBehaviour
         Gizmos.DrawLine(bottomRight, bottomLeft);
         Gizmos.DrawLine(bottomLeft, topLeft);
         
-        // Draw check radius visualization at center
+        // Draw check box visualization at center
         Gizmos.color = Color.cyan;
         Vector3 centerPosition = new Vector3(
             (easternXLimit + westernXLimit) / 2f,
             (northernYLimit + southernYLimit) / 2f,
             zSpawnPosition
         );
-        Gizmos.DrawWireSphere(centerPosition, _checkRadius);
+        Gizmos.DrawWireCube(centerPosition, _checkBoxSize);
     }
 #endif
 }
