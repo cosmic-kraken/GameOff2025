@@ -163,6 +163,7 @@ Transform:
   - {fileID: 6655003181300734078}
   - {fileID: 1126950009907723746}
   - {fileID: 6177037129971626494}
+  - {fileID: 543450653253729209}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &397661090
@@ -1048,6 +1049,44 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4648840841846904385, guid: a0179737058ed7440840d0071387fbe3, type: 3}
   m_PrefabInstance: {fileID: 275834400502332857}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &543450653253729209 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7413200534845816820, guid: c38bd4bb9334e1341ab9c1d846ecee38, type: 3}
+  m_PrefabInstance: {fileID: 585536010739691267}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &585536010739691267
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 397661089}
+    m_Modifications:
+    - target: {fileID: 1240895459042932099, guid: c38bd4bb9334e1341ab9c1d846ecee38, type: 3}
+      propertyPath: m_Name
+      value: Jelly Fish
+      objectReference: {fileID: 0}
+    - target: {fileID: 1240895459042932099, guid: c38bd4bb9334e1341ab9c1d846ecee38, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7413200534845816820, guid: c38bd4bb9334e1341ab9c1d846ecee38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7413200534845816820, guid: c38bd4bb9334e1341ab9c1d846ecee38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7413200534845816820, guid: c38bd4bb9334e1341ab9c1d846ecee38, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: c38bd4bb9334e1341ab9c1d846ecee38, type: 3}
 --- !u!1001 &1126950009907723745
 PrefabInstance:
   m_ObjectHideFlags: 0
