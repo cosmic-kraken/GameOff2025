@@ -365,6 +365,7 @@ GameObject:
   - component: {fileID: 437316648524252438}
   - component: {fileID: 7344141654944580912}
   - component: {fileID: 662371355974522911}
+  - component: {fileID: 2607750127981139796}
   m_Layer: 0
   m_Name: Shark
   m_TagString: Untagged
@@ -466,7 +467,7 @@ MonoBehaviour:
           m_Value0: 11385771196199123201
           m_Value1: 15559487141899108343
         Name: SwimSpeed
-        m_Value: 5
+        m_Value: 12
     - rid: 1015022544482992555
       type: {class: 'BlackboardVariable`1[[System.Collections.Generic.List`1[[UnityEngine.Vector3, UnityEngine.CoreModule]], mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -475,9 +476,10 @@ MonoBehaviour:
           m_Value1: 8094198043907379337
         Name: PatrolPoints
         m_Value:
-        - {x: -68.7, y: 50, z: 0}
-        - {x: -14.5, y: 48, z: 0}
-        - {x: 15, y: 50, z: 0}
+        - {x: -120, y: -91, z: 0}
+        - {x: -241, y: -39, z: 0}
+        - {x: -254, y: -146, z: 0}
+        - {x: -148, y: -176.4, z: 0}
     - rid: 1015022544482992974
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -492,8 +494,8 @@ MonoBehaviour:
         GUID:
           m_Value0: 13024893494602361396
           m_Value1: 15356920099318384837
-        Name: LostDetectionRange
-        m_Value: 50
+        Name: ChaseDetectionRange
+        m_Value: 60
     - rid: 1015022544482993063
       type: {class: 'BlackboardVariable`1[[System.Single, mscorlib]]', ns: Unity.Behavior, asm: Unity.Behavior}
       data:
@@ -501,7 +503,7 @@ MonoBehaviour:
           m_Value0: 11934507220126452480
           m_Value1: 14298062686808836452
         Name: ChaseSpeed
-        m_Value: 8
+        m_Value: 18
 --- !u!114 &662371355974522911
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -515,6 +517,28 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SharkEyePosition: {fileID: 2470231092988776783}
+--- !u!95 &2607750127981139796
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2695082955844895824}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 6896944408ee85943bc6822a81bb5424, type: 2}
+  m_Controller: {fileID: 9100000, guid: b478403386bbdbd4a840ac723cec85b0, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2864314190188717143
 GameObject:
   m_ObjectHideFlags: 0

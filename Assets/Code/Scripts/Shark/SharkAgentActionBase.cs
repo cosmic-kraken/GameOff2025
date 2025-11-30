@@ -9,6 +9,7 @@ public abstract class SharkAgentActionBase : Action
     [SerializeReference] public BlackboardVariable<GameObject> Self;
 
     protected NavMeshAgent Agent;
+    protected Animator Animator;
 
     protected bool TryInitializeAgent(float? speed = null)
     {
