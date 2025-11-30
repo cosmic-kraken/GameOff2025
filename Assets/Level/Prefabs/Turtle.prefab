@@ -5786,7 +5786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769553da249694baf87fef692e6673f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxBreathTime: 20
+  _maxBreathTime: 30
   _disableBreathing: 1
   maxHealth: 100
   currentHealth: 100
