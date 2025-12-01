@@ -508,7 +508,9 @@ public class TurtleController : MonoBehaviour, IDamageable
         currentHealth = Mathf.Max(currentHealth, 0f);
         OnTurtleHealthChanged?.Invoke(currentHealth, maxHealth);
         
+        
         // TODO: Do damage feedback (particles, sound, camera shake, etc.)
+        cameraEffects?.TriggerDamageFlash();
 
         if (currentHealth <= 0f) {
             isDead = true;
