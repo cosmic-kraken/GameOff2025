@@ -192,6 +192,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.x
       value: 1.7800293
       objectReference: {fileID: 0}
+    - target: {fileID: 6280470469939998025, guid: 491c7fedddffcc8438c3f4df09684dc5, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 7078499131300189106, guid: 491c7fedddffcc8438c3f4df09684dc5, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -298,7 +302,7 @@ MonoBehaviour:
     _sceneName: MainMenu
   _temporaryCamera: {fileID: 788158358}
   _loadingScreen: {fileID: 463690089}
-  _loadingScreenDelay: 2
+  _loadingScreenDelay: 2.5
 --- !u!1 &788158358
 GameObject:
   m_ObjectHideFlags: 0

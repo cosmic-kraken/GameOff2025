@@ -23,6 +23,10 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
     [Header("Trash UI Settings")]
     [SerializeField] private TextMeshProUGUI _trashText;
     
+    [Header("Background color settings")]
+    [SerializeField] private Color cleanWaterColor = new Color(6, 42, 123) / 255f;
+    [SerializeField] private Color dirtyWaterColor = new Color(48, 70, 59) / 255f;
+    
     private int currentMaxTrash = 0;
     private int collectedTrash = 0;
     private int[] previousCharges;
@@ -164,6 +168,10 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
         if (collectedTrash >= currentMaxTrash) {
             GameStateManager.Instance.WinGame();
         }
+        
+        var camera = Camera.main;
+        if (camera != null)
+            camera.backgroundColor = Color.Lerp(dirtyWaterColor, cleanWaterColor, (float)collectedTrash / currentMaxTrash);
     }
     
     private void OnTurtleDeath() {
