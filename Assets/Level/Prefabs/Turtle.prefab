@@ -5803,7 +5803,7 @@ MonoBehaviour:
   dashCharges: 3
   dashDuration: 0.4
   dashCooldown: 0.5
-  dashChargeRegenTime: 2
+  dashChargeRegenTime: 5
   dashParticles: {fileID: 8435276916087884565}
   cameraEffects: {fileID: 0}
   trashHintThreshold: 10
