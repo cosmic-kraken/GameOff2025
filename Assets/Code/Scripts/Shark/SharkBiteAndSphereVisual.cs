@@ -57,8 +57,7 @@ public class SharkDetectionVisual : MonoBehaviour
 
         if (turtle != null)
         {
-            // TODO: Add bite sound effect
-            // AudioManager.Instance?.Play("SharkBite");
+            AudioManager.Instance?.Play("Bite");
 
             _behaviorGraphAgent.SetVariableValue("TurtleBite", true);
             if (_biteEffect != null)
