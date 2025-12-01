@@ -37,23 +37,33 @@ public class GameUIManager : Singleton<GameUIManager>
     }
 
     public void SetPauseMenuUIActive(bool isActive) {
+        SetCursorVisibility(isActive);
        _pauseMenuUI?.SetActive(isActive);   
     }
     
     public void SetGameplayUIActive(bool isActive) {
+        SetCursorVisibility(!isActive);
         _gameplayUI?.SetActive(isActive);
     }
     
     public void SetGameOverUIActive(bool isActive) {
+        SetCursorVisibility(isActive);
         _gameOverUI?.SetActive(isActive);
     }
     
     public void SetVictoryUIActive(bool isActive) {
+        SetCursorVisibility(isActive);
         _victoryUI?.SetActive(isActive);
     }
     
     public void SetMainMenuUIActive(bool isActive) {
+        SetCursorVisibility(isActive);
         _mainMenuUI?.SetActive(isActive);
+    }
+    
+    private void SetCursorVisibility(bool isVisible) {
+        Cursor.visible = isVisible;
+        Cursor.lockState = isVisible ? CursorLockMode.None : CursorLockMode.Locked;
     }
     
     public void HideAllUI() {
