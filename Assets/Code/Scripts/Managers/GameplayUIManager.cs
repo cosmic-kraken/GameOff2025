@@ -30,6 +30,7 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
 
     
     private void OnEnable() {
+        TurtleController.OnTurtleDeath += OnTurtleDeath;
         TurtleController.OnTurtleHealthChanged += UpdateHealthUI;
         TurtleController.OnTurtleBreathChanged += UpdateBreathUI;
         TurtleController.OnTurtleDashChargesInitialized += InitializeTurtleDashUI;
@@ -39,6 +40,7 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
     }
 
     private void OnDisable() {
+        TurtleController.OnTurtleDeath -= OnTurtleDeath;
         TurtleController.OnTurtleHealthChanged -= UpdateHealthUI;
         TurtleController.OnTurtleBreathChanged -= UpdateBreathUI;
         TurtleController.OnTurtleDashChargesInitialized -= InitializeTurtleDashUI;
@@ -158,5 +160,13 @@ public class GameplayUIManager : Singleton<GameplayUIManager>
         if (_trashText) {
             _trashText.text = $"{collectedTrash} / {currentMaxTrash}";
         }
+        
+        if (collectedTrash >= currentMaxTrash) {
+            GameStateManager.Instance.WinGame();
+        }
+    }
+    
+    private void OnTurtleDeath() {
+        GameStateManager.Instance.LoseGame();
     }
 }

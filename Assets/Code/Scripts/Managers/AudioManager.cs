@@ -16,7 +16,7 @@ public class AudioManager : MonoBehaviour
     private int musicIndex = 0;
     private float musicTimer = 0f;
     private const float songInterval = 180f; // 3 minutes
-    private float startDelay = 30f; // 30 seconden stilte
+    private float startDelay = 3f; // 30 seconden stilte. Note van Hadi: aangepast naar 3f omdat het nu ingaat bij main menu en de liedjes langzaam starten.
     private bool musicStarted = false;
 
 

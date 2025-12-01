@@ -5787,7 +5787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxBreathTime: 40
-  _disableBreathing: 1
+  _disableBreathing: 0
   maxHealth: 100
   currentHealth: 100
   invincible: 0

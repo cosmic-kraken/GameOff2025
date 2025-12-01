@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameStateManager : Singleton<GameStateManager>
 {
+    public static Action OnGameFinished;
+    
     private const string HighScoreKey = "HighScore";
     
     public bool IsGamePaused { get; private set; }
@@ -50,5 +52,19 @@ public class GameStateManager : Singleton<GameStateManager>
         Time.timeScale = 1f;
         GameUIManager.Instance?.SetGameplayUIActive(true);
         GameUIManager.Instance?.SetPauseMenuUIActive(false);
+    }
+
+    public void WinGame() {
+        ResumeGame();
+        GameUIManager.Instance?.SetGameplayUIActive(false);
+        GameUIManager.Instance?.SetVictoryUIActive(true);
+        OnGameFinished?.Invoke();
+    }
+    
+    public void LoseGame() {
+        ResumeGame();
+        GameUIManager.Instance?.SetGameplayUIActive(false);
+        GameUIManager.Instance?.SetGameOverUIActive(true);
+        OnGameFinished?.Invoke();
     }
 }

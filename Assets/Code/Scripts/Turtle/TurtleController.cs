@@ -117,12 +117,18 @@ public class TurtleController : MonoBehaviour, IDamageable
         controls = new PlayerControls();
         controls.Player.Enable();
         controls.Player.PauseUnpause.performed += OnPauseToggle;
+        GameStateManager.OnGameFinished += OnGameFinished;
     }
 
     private void OnDisable() {
         controls.Player.Disable();
         controls.Player.PauseUnpause.performed -= OnPauseToggle;
+        GameStateManager.OnGameFinished -= OnGameFinished;
         controls = null;
+    }
+    
+    private void OnGameFinished() {
+        enabled = false;
     }
     
     private void OnPauseToggle(InputAction.CallbackContext context) {
@@ -513,4 +519,12 @@ public class TurtleController : MonoBehaviour, IDamageable
     public bool IsAlive()  => !isDead;
     
     public bool IsDead() => isDead;
+    
+    public void Heal(float amount) {
+        if (isDead) return;
+
+        currentHealth += amount;
+        currentHealth = Mathf.Min(currentHealth, maxHealth);
+        OnTurtleHealthChanged?.Invoke(currentHealth, maxHealth);
+    }
 }
