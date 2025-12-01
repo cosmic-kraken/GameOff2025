@@ -241,6 +241,8 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _trashText: {fileID: 485003555894440486}
+  cleanWaterColor: {r: 0.023529412, g: 0.16470589, b: 0.48235294, a: 0.003921569}
+  dirtyWaterColor: {r: 0.1882353, g: 0.27450982, b: 0.24510522, a: 0.003921569}
 --- !u!1 &435240524695053114
 GameObject:
   m_ObjectHideFlags: 0
