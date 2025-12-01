@@ -66,6 +66,7 @@ MonoBehaviour:
   _checkBoxSize: {x: 10, y: 10, z: 100}
   _limitSpawnAttempts: 0
   _maxSpawnAttempts: 100
+  _debugMode: 0
   _obstacleLayer:
     serializedVersion: 2
     m_Bits: 448

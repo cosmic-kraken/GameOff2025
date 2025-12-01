@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class GameStateManager : Singleton<GameStateManager>
 {
+    public static Action OnGameFinished;
+    
     private const string HighScoreKey = "HighScore";
     
+    public bool IsGamePaused { get; private set; }
     public int Score { get; private set; }
     public int HighScore { get; private set; }
     
@@ -25,7 +28,8 @@ public class GameStateManager : Singleton<GameStateManager>
     
     public void ResetGame() {
         ResetScore();
-        // Add other game state reset logic here
+        IsGamePaused = false;
+        ResumeGame();
     }
     
     public void ResetScore() {
@@ -34,5 +38,33 @@ public class GameStateManager : Singleton<GameStateManager>
 
     private void OnApplicationQuit() {
         PlayerPrefs.SetInt("HighScore", HighScore);
+    }
+    
+    public void PauseGame() {
+        IsGamePaused = true;
+        Time.timeScale = 0f;
+        GameUIManager.Instance?.SetGameplayUIActive(false);
+        GameUIManager.Instance?.SetPauseMenuUIActive(true);
+    }
+    
+    public void ResumeGame() {
+        IsGamePaused = false;
+        Time.timeScale = 1f;
+        GameUIManager.Instance?.SetGameplayUIActive(true);
+        GameUIManager.Instance?.SetPauseMenuUIActive(false);
+    }
+
+    public void WinGame() {
+        ResumeGame();
+        GameUIManager.Instance?.SetGameplayUIActive(false);
+        GameUIManager.Instance?.SetVictoryUIActive(true);
+        OnGameFinished?.Invoke();
+    }
+    
+    public void LoseGame() {
+        ResumeGame();
+        GameUIManager.Instance?.SetGameplayUIActive(false);
+        GameUIManager.Instance?.SetGameOverUIActive(true);
+        OnGameFinished?.Invoke();
     }
 }

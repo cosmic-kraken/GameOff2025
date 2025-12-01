@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 3840805825895328963}
   - component: {fileID: 8435276916087884565}
   - component: {fileID: 1922669934497603196}
-  m_Layer: 7
+  m_Layer: 0
   m_Name: DashTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5787,7 +5787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxBreathTime: 40
-  _disableBreathing: 1
+  _disableBreathing: 0
   maxHealth: 100
   currentHealth: 100
   invincible: 0

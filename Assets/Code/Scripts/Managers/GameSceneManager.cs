@@ -6,6 +6,10 @@ using UnityEngine.UI;
 
 public class GameSceneManager : Singleton<GameSceneManager>
 {
+    // Nieuwe note van Hadi:
+    // Dit is misschien niet de beste manier om scenes + UI te regelen. Het is spaghetti. Maar het heeft gewoon recht om te bestaan in een GameJam.
+    // Thank you for coming to my TedTalk
+    
     // Note van Hadi:
     // Roep LoadScene aan met de naam van de scene die je wilt laden. Je kan SceneReference gebruiken om ze in de inspector te zetten.
     // De oude scene wordt automatisch ontladen. Maar de System scene blijft geladen omdat die persistent is. Voor alle managers etc.
@@ -21,13 +25,13 @@ public class GameSceneManager : Singleton<GameSceneManager>
     private Coroutine _currentSceneLoadingCoroutine;
     
 
-    public void LoadScene(string sceneToLoad) 
+    public void LoadScene(string sceneToLoad, bool isGameScene = false) 
     {
         if (_currentSceneLoadingCoroutine != null)
         {
             StopCoroutine(_currentSceneLoadingCoroutine);
         }
-        _currentSceneLoadingCoroutine = StartCoroutine(LoadSceneCoroutine(sceneToLoad));
+        _currentSceneLoadingCoroutine = StartCoroutine(LoadSceneCoroutine(sceneToLoad, isGameScene));
     }
     
     public void ToMainMenu() 
@@ -36,11 +40,12 @@ public class GameSceneManager : Singleton<GameSceneManager>
         {
             StopCoroutine(_currentSceneLoadingCoroutine);
         }
-        _currentSceneLoadingCoroutine = StartCoroutine(LoadSceneCoroutine(_mainMenuScene));
+        GameUIManager.Instance?.HideAllUI();
         GameStateManager.Instance?.ResetGame();
+        _currentSceneLoadingCoroutine = StartCoroutine(LoadSceneCoroutine(_mainMenuScene));
     }
     
-    private IEnumerator LoadSceneCoroutine(string newScene)
+    private IEnumerator LoadSceneCoroutine(string newScene, bool isGameScene = false)
     {
         // Determine the currently active scene (excluding System)
         var oldScene = string.Empty;
@@ -51,6 +56,10 @@ public class GameSceneManager : Singleton<GameSceneManager>
                 break;
             }
         }
+        
+        
+        // Hide gameplay UI during scene transition
+        GameUIManager.Instance.SetGameplayUIActive(false);
         
         // If no active scene found, abort loading. This should not happen.
         if (string.IsNullOrEmpty(oldScene)) {
@@ -84,10 +93,27 @@ public class GameSceneManager : Singleton<GameSceneManager>
         // Wait for a brief moment to ensure loading screen is visible
         yield return new WaitForSeconds(_loadingScreenDelay);
         
+        // Activate gameplay UI if we loaded a game scene
+        if (isGameScene) {
+            GameUIManager.Instance.SetGameplayUIActive(true);
+        }
+        else {
+            if (newScene.Contains("MainMenu", System.StringComparison.OrdinalIgnoreCase)) {
+                GameUIManager.Instance.SetMainMenuUIActive(true);
+            }
+        }
+        
         // Load new scene and turn off temporary camera
+        // TODO: Remove this ugly hack if we continue with this project. We want to fade loading screen out AFTER trash has spawned (heaviest start operation)
+        var trashSpawned = true;
+        if (newScene.Contains("Level", System.StringComparison.OrdinalIgnoreCase)) {
+            trashSpawned = false;
+            TrashSpawner.OnTrashSpawned += _ =>  trashSpawned = true;
+        }
+        
         var loadOperation = SceneManager.LoadSceneAsync(newScene, LoadSceneMode.Additive);
         loadOperation!.completed += _ => _temporaryCamera.SetActive(false);
-        while (!loadOperation.isDone) {
+        while (!loadOperation.isDone && !trashSpawned) {
             yield return null;
         }
         
