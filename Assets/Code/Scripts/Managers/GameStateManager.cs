@@ -16,6 +16,7 @@ public class GameStateManager : Singleton<GameStateManager>
     protected override void Awake() {
         base.Awake();
         ResetScore();
+        Application.targetFrameRate = 120;
         HighScore = PlayerPrefs.GetInt(HighScoreKey, 0);
     }
     
