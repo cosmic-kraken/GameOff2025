@@ -10,12 +10,12 @@ public abstract class SharkAgentActionBase : Action
 
     protected NavMeshAgent Agent;
     protected Animator Animator;
-
-    protected bool TryInitializeAgent(float? speed = null)
+    protected bool TryInitializeBase(float? speed = null)
     {
         if (Self == null || Self.Value == null)
             return false;
 
+        // NavMeshAgent
         Agent = Self.Value.GetComponent<NavMeshAgent>();
         if (Agent == null)
             return false;
@@ -25,7 +25,12 @@ public abstract class SharkAgentActionBase : Action
 
         if (speed.HasValue)
             Agent.speed = speed.Value;
-            Agent.acceleration = speed.Value * 2f;
+        Agent.acceleration = 12f;
+
+        // Animator
+        Animator = Self.Value.GetComponent<Animator>();
+        if (Animator == null)
+            return false;
 
         return true;
     }
@@ -70,6 +75,34 @@ public abstract class SharkAgentActionBase : Action
             return Status.Failure;
 
         return Status.Success;
+    }
+
+    protected void PlayAnimationIfNotRunning(string animationName, string transitionTrigger = null)
+    {
+        int animHash = Animator.StringToHash(animationName);
+
+        var current = Animator.GetCurrentAnimatorStateInfo(0);
+        bool isCurrent = current.shortNameHash == animHash;
+
+        bool isNext = false;
+        if (Animator.IsInTransition(0))
+        {
+            var next = Animator.GetNextAnimatorStateInfo(0);
+            isNext = next.shortNameHash == animHash;
+        }
+
+        // Already in this state or already transitioning to it → do nothing
+        if (isCurrent || isNext)
+            return;
+
+        if (!string.IsNullOrEmpty(transitionTrigger))
+        {
+            Animator.SetTrigger(transitionTrigger);
+        }
+        else
+        {
+            Animator.Play(animationName);
+        }
     }
 
 }
