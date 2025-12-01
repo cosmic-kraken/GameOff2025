@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class JellyfishController : MonoBehaviour
@@ -38,22 +39,19 @@ public class JellyfishController : MonoBehaviour
             patrolPoints[i].z = 0f;
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
+    public float HealAndDestroy(TurtleController turtleController) {
+        turtleController.Heal(25f);
+        if (gameObject.transform.parent != null)
         {
-            other.GetComponent<TurtleController>().Heal(25f);
-            if (gameObject.transform.parent != null)
-            {
-                gameObject.transform.parent.GetComponent<JellyfishManager>().ScheduleRespawn(gameObject, respawnTime);
-                transform.position = startPosition;
-                currentPoint = 0;
-                gameObject.SetActive(false);
-            }
-            else{
-                Destroy(gameObject);
-            }
+            gameObject.transform.parent.GetComponent<JellyfishManager>().ScheduleRespawn(gameObject, respawnTime);
+            transform.position = startPosition;
+            currentPoint = 0;
+            gameObject.SetActive(false);
         }
+        else{
+            Destroy(gameObject);
+        }
+        return 25f;
     }
 
     void Update()
@@ -127,5 +125,21 @@ public class JellyfishController : MonoBehaviour
         //------------------------------------------------------------------
         if (Vector3.Distance(transform.position, target) < arriveDistance)
             currentPoint = (currentPoint + 1) % patrolPoints.Length;
+    }
+
+
+    private void OnDrawGizmosSelected(){
+        
+        Gizmos.color = Color.magenta;
+        for (int i = 0; i < patrolPoints.Length; i++)
+        {
+            Vector3 point = patrolPoints[i];
+            point.z = 0f;
+            Gizmos.DrawSphere(point, 0.5f);
+
+            Vector3 nextPoint = patrolPoints[(i + 1) % patrolPoints.Length];
+            nextPoint.z = 0f;
+            Gizmos.DrawLine(point, nextPoint);
+        }
     }
 }

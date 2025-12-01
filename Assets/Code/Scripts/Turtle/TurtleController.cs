@@ -486,14 +486,17 @@ public class TurtleController : MonoBehaviour, IDamageable
             
             AudioManager.Instance?.Play("Pickup");
         }
-        
-        if (other.TryGetComponent<IAirBubble>(out var airBubble)) {
+        else if (other.TryGetComponent<IAirBubble>(out var airBubble)) {
             var airAmount = airBubble.GetAirAmount();
             breathTimer += airAmount;
             breathTimer = Mathf.Min(breathTimer, _maxBreathTime);
             OnTurtleBreathChanged?.Invoke(breathTimer, _maxBreathTime);
             airBubble.PopBubble();
             AudioManager.Instance?.Play("Small_Bubbles");
+        }
+        else if (other.TryGetComponent<JellyfishController>(out var jellyfishController)) {
+            jellyfishController.HealAndDestroy(this);
+            AudioManager.Instance?.Play("Pickup");
         }
     }
 

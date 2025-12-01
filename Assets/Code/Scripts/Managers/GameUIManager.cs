@@ -13,10 +13,11 @@ public class GameUIManager : Singleton<GameUIManager>
     [SerializeField] private GameObject _mainMenuUI;
 
 
-    private void Start() {
+    protected override void Awake() {
+        base.Awake();
         InitializeUIFromLoadedScenes();
     }
-    
+
     private void InitializeUIFromLoadedScenes() {
         var loadedScenes = SceneManager.loadedSceneCount;
         
