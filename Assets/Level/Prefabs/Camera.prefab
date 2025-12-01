@@ -359,7 +359,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  postProcessVolume: {fileID: 0}
+  postProcessVolume: {fileID: 8241543999936152720, guid: 7d4ac0008fae4ad45869e06cf78bd2fa, type: 3}
   damageVignetteIntensity: 0.4
   damageUpTime: 0.1
   damageDownTime: 0.5
