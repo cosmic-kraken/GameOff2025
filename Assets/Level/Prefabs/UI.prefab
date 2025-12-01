@@ -8832,7 +8832,7 @@ MonoBehaviour:
 
     Dash - Space
 
-    Pause - P'
+    Pause - P / Escape'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e2dbcce15ee8150469754f188c80cbc3, type: 2}
   m_sharedMaterial: {fileID: 6660505129539933885, guid: e2dbcce15ee8150469754f188c80cbc3, type: 2}
