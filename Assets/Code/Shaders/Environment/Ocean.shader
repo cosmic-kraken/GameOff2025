@@ -17,7 +17,7 @@ Shader "Ocean/Ocean_URP_LitTransparent"
         {
             "RenderType"="Transparent"
             "Queue"="Transparent-100"              // EARLIER than normal Transparent
-            "RenderPipeline"="UniversalRenderPipeline"
+            "RenderPipeline"="UniversalPipeline"
         }
 
         Pass
