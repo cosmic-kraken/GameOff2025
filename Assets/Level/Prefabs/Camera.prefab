@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 2484826080636416886}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -200}
+  m_LocalPosition: {x: -4.7, y: 39, z: -250}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -108,7 +108,7 @@ MonoBehaviour:
     m_Bits: 1
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
-  m_RenderPostProcessing: 0
+  m_RenderPostProcessing: 1
   m_Antialiasing: 0
   m_AntialiasingQuality: 2
   m_StopNaN: 0
@@ -258,7 +258,7 @@ MonoBehaviour:
     FieldOfView: 20
     OrthographicSize: 5
     NearClipPlane: 80
-    FarClipPlane: 500
+    FarClipPlane: 600
     Dutch: 0
     ModeOverride: 0
     PhysicalProperties:
@@ -359,6 +359,10 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  postProcessVolume: {fileID: 8241543999936152720, guid: 7d4ac0008fae4ad45869e06cf78bd2fa, type: 3}
+  damageVignetteIntensity: 0.4
+  damageUpTime: 0.1
+  damageDownTime: 0.5
 --- !u!114 &6954790469101272614
 MonoBehaviour:
   m_ObjectHideFlags: 0

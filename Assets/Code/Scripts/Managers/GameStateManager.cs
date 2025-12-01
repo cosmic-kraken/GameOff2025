@@ -16,6 +16,7 @@ public class GameStateManager : Singleton<GameStateManager>
     protected override void Awake() {
         base.Awake();
         ResetScore();
+        Application.targetFrameRate = 120;
         HighScore = PlayerPrefs.GetInt(HighScoreKey, 0);
     }
     
@@ -56,6 +57,7 @@ public class GameStateManager : Singleton<GameStateManager>
 
     public void WinGame() {
         ResumeGame();
+        AudioManager.Instance?.Play("Victory");
         GameUIManager.Instance?.SetGameplayUIActive(false);
         GameUIManager.Instance?.SetVictoryUIActive(true);
         OnGameFinished?.Invoke();
@@ -63,6 +65,7 @@ public class GameStateManager : Singleton<GameStateManager>
     
     public void LoseGame() {
         ResumeGame();
+        AudioManager.Instance?.Play("GameOver");
         GameUIManager.Instance?.SetGameplayUIActive(false);
         GameUIManager.Instance?.SetGameOverUIActive(true);
         OnGameFinished?.Invoke();
