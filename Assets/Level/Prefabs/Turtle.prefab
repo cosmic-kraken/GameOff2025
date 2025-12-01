@@ -5791,7 +5791,7 @@ MonoBehaviour:
   maxHealth: 100
   currentHealth: 100
   invincible: 0
-  regenPerSecond: 2
+  regenPerSecond: 0.5
   swimSpeed: 35
   swimForce: 10
   turnSpeed: 5

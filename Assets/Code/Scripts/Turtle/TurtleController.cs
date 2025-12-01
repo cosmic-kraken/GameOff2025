@@ -250,6 +250,7 @@ public class TurtleController : MonoBehaviour, IDamageable
         if (currentHealth < maxHealth) {
             currentHealth += regenPerSecond * Time.deltaTime;
             currentHealth = Mathf.Min(currentHealth, maxHealth);
+            OnTurtleHealthChanged?.Invoke(currentHealth, maxHealth);
         }
 
         // Breathing timer
