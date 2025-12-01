@@ -11,6 +11,7 @@ using Unity.VisualScripting;
 [NodeDescription(name: "SharkMoveToPatrolPoint", story: "Move [Self] NavMeshAgent towards [CurrentPatrolIndex] from [PatrolPoints] with [SwimSpeed]", category: "Action", id: "e129c8c03887fa34695a20de77fa9bce")]
 public partial class SharkMoveToPatrolPointAction : SharkAgentActionBase
 {
+    [SerializeReference] public BlackboardVariable<bool> IsChasing;
     [SerializeReference] public BlackboardVariable<int> CurrentPatrolIndex;
     [SerializeReference] public BlackboardVariable<List<Vector3>> PatrolPoints;
     [SerializeReference] public BlackboardVariable<float> SwimSpeed;
@@ -38,6 +39,7 @@ public partial class SharkMoveToPatrolPointAction : SharkAgentActionBase
 
         Agent.SetDestination(_targetPosition);
         PlayAnimationIfNotRunning("Swimming", "LostChase");
+        IsChasing.Value = false;
         return Status.Running;
     }
 

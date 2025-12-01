@@ -10,7 +10,6 @@ public abstract class SharkAgentActionBase : Action
 
     protected NavMeshAgent Agent;
     protected Animator Animator;
-
     protected bool TryInitializeBase(float? speed = null)
     {
         if (Self == null || Self.Value == null)
